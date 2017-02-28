@@ -18,7 +18,7 @@ http://baike.baidu.com/item/%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%
 D[0]   D[1]   D[2]   D[3]   D[4]   D[5]  
 0   1000000   10     50     30     60  
     
-    
+        
     #include <iostream>  
     #include <cstdio>  
     #define MAX 1000000  
@@ -120,55 +120,59 @@ http://blog.csdn.net/luxiaoxun/article/details/7980618
 综上所述，二分查找共有 2*4*8 种写法。  
 算法的目的是解决问题，下面以针对不下降序列a的4个问题为例，给出我认为效率较高，较为简洁的代码。  
 对于不下降序列a，n为序列a元素的个数，key为关键字：  
-1.求最小的i，使得a[i]=key,若不存在，则返回-1
-        int binary_search_1(int a[], int n, int key)
-        {
-            int m, l = 0, r = n-1;//闭区间[0, n-1]
-            while(l < r)
-            {
-                m = l+(r-l)>>2;//向下取整
-                if(a[m] < key) l = m+1;
-                else r = m;
-            }
-            if(a[r] == key) return r;
-            else return -1;
-        }
+1.求最小的i，使得a[i]=key,若不存在，则返回-1  
+
+    int binary_search_1(int a[], int n, int key)  
+    {  
+        int m, l = 0, r = n-1;//闭区间[0, n-1]  
+        while(l < r)  
+        {  
+            m = l+(r-l)>>2;//向下取整  
+            if(a[m] < key) l = m+1;  
+            else r = m;  
+        }  
+        if(a[r] == key) return r;  
+        else return -1;  
+    }
 2.求最大的i,使得a[i]=key,若不存在，则返回-1  
-        int binary_search_2(int a[], int n, int key)
+
+    int binary_search_2(int a[], int n, int key)
+    {
+        int m, l = 0, r = n-1;//闭区间[0, n-1]
+        while(l < r)
         {
-            int m, l = 0, r = n-1;//闭区间[0, n-1]
-            while(l < r)
-            {
-                m = l+(r-l+1)>>2;//向上取整
-                if(a[m] <= key) l = m;
-                else r = m-1;
-            }
-            if(a[l] == key) return l;
-            else return -1;
-        }
-3.求最小的i,使得a[i]>key,若不存在，则返回-1
-        int binary_search_3(int a[], int n, int key)
+            m = l+(r-l+1)>>2;//向上取整
+            if(a[m] <= key) l = m;
+            else r = m-1;
+        }
+        if(a[l] == key) return l;
+        else return -1;
+    }
+3.求最小的i,使得a[i]>key,若不存在，则返回-1  
+
+    int binary_search_3(int a[], int n, int key)
+    {
+        int m, l = 0, r = n-1;
+        while(l < r)
         {
-            int m, l = 0, r = n-1;
-            while(l < r)
-            {
-                m = l+(r-l)>>2;
-                if(a[m]<=key) l = m+1;
-                else r = m;
-            }
-            if(a[r] > key) return r;
-            else return -1;
+            m = l+(r-l)>>2;
+            if(a[m]<=key) l = m+1;
+            else r = m;
         }
-4.求最大的i,使得a[i]\<key,若不存在，则返回-1
-        int binary_search_4(int a[], int n, int key)
+        if(a[r] > key) return r;
+        else return -1;
+    }
+4.求最大的i,使得a[i]\<key,若不存在，则返回-1  
+
+    int binary_search_4(int a[], int n, int key)
+    {
+        int m, l = 0, r = n-1;
+        while(l < r)
         {
-            int m, l = 0, r = n-1;
-            while(l < r)
-            {
-                m = l+(r-l+1)>>2;
-                if(a[m]\<key) l = m;
-                else r = m-1;
-            }
-            if(a[l] < key) return l;
-            else return -1;
+            m = l+(r-l+1)>>2;
+            if(a[m]\<key) l = m;
+            else r = m-1;
         }
+        if(a[l] < key) return l;
+        else return -1;
+    }
