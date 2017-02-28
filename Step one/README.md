@@ -1,4 +1,4 @@
-# 最短路(Floyd、Dijstra,BellmanFord)  
+# 1.最短路(Floyd、Dijstra,BellmanFord)  
 
 ## Floyd  
 参考:  
@@ -86,3 +86,9 @@ D[0]   D[1]   D[2]   D[3]   D[4]   D[5]
         return 0;
     }  
 
+
+# 2.最小生成树  
+## prim  
+## kruscal
+
+# 3.大数(高精度)加减乘除
