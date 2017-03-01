@@ -263,27 +263,39 @@ http://blog.csdn.net/niushuai666/article/details/6791765
          
          void print_path(int root)  
          {  
-            while(root != pre[root])
-            {
-                printf("%d-->", root);
-                root = pre[root];
+             while(root != pre[root])
+             {
+                 printf("%d-->", root);
+                 root = pre[root];
 
-            }  
-            if(root == pre[root])  
-                pritnf("%d\n", root);
+             }  
+             if(root == pre[root])  
+                 pritnf("%d\n", root);
                 
          }
          
          int main()  
          {  
-            scanf("%d%d%d", &nodenum, &edgenum, &original);  
-            pre[original] = original;  
-            for(int i = 1; i <=edgenum; i++)  
-            {  
-                scanf("%d%d%d", &edge[i].u, &edge[i].v, &edge[i].cost);
-            }
-            if(B
-         }
+             scanf("%d%d%d", &nodenum, &edgenum, &original);  
+             pre[original] = original;  
+             for(int i = 1; i <=edgenum; i++)  
+             {  
+                 scanf("%d%d%d", &edge[i].u, &edge[i].v, &edge[i].cost);
+             }
+             if(Bellman_Ford())  
+                 for(int i = 1; i <= nodenum; i++)  
+                 {  
+                     printf("%d\n", dis[i]);  
+                      printf("Path:");  
+                     printf_path(i);
+                 }  
+             else  
+                 printf("have negative circle\n");  
+                 
+             return 0;    
+            
+            
+          }
          
             
                         
