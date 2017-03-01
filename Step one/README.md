@@ -153,10 +153,69 @@ D[0]   D[1]   D[2]   D[3]   D[4]   D[5]
                 }  
                 printf("<-%d", v);  
             }  
+        }  
+        
+      
+      
+## Floyd  
+
+    //path给出了每一对顶点之间的最短路径,p[i][j]所保存的值时顶点i到顶点j的路径中j的前驱顶点    
+    //A[n][n]矩阵来保存每部所求的的所有顶点对之间的当前最短路径长度  
+    int path[n][n];  
+    void Floyd(float A[n][n], float dist[n][n])  
+    {  
+        int MAX = 10000;  
+        int pre;
+        for(int i = 0; i < n; i++)  
+        {  
+            for(int j = 0; j < n; j++)  
+            {  
+                if(dist[i][j] != MAX)  
+                    path[i][j] = i+1;  
+                else  
+                    path[i][j] = 0;  
+                    
+                A[i][j] = dist[i][j];
+            }  
+            
+            
+            for(int k = 0; k < n; k++)  
+            {
+                for（int i = 0; i < n; i++)  
+                {  
+                    for(int j = 0; j < n; j++)  
+                    {  
+                        if(A[i][j] > A[i][k]+A[k][j])  
+                        {  
+                            A[i][j] = A[i][k] + A[k][j];
+                            path[i][j] = path[k][j];  
+                            
+                        }
+                    }
+                }
+            }  
+            for(int i = 0; i < n; i++)  
+            {  
+                for(int j = 0; j < n; j++)  
+                {  
+                    printf("%d %d", A[i][j], j);
+                    pre = path[i][j];
+                    while(pre!=0 && pre!=i+1)  
+                    {  
+                        printf("<-%d", pre-1);
+                        pre = path[i][pre-1];
+                    }
+                    printf("<-%d\n", i);
+                    
+                }
+            }
+            
+            
         }
-        
     
     
+    
+    
     
 # 2.最小生成树  
 ## prim  
