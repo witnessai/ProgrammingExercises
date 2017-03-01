@@ -2,11 +2,15 @@
 
 ## Dijkstra
 参考:  
-http://baike.baidu.com/item/%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95?fr=aladdin 
+http://baike.baidu.com/item/%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95?fr=aladdin   
 
 
+Dijkstra是单源最短路径的有效算法，但是要求权值非负  
+解释为什么要求权值非负：    
+http://www.cnblogs.com/tanhehe/archive/2013/02/03/2890767.html  
 
-测试数据 教科书 P189 G6 的邻接矩阵 其中 数字 1000000 代表无穷大  
+
+测试数据 教科书 P189 G6 的邻接矩阵 其中 数字 1000000 代表无穷大  
 6  
 1000000 1000000 10 100000 30 100  
 1000000 1000000 5 1000000 1000000 1000000  
@@ -159,59 +163,59 @@ D[0]   D[1]   D[2]   D[3]   D[4]   D[5]
       
 ## Floyd  
 
-    //path给出了每一对顶点之间的最短路径,p[i][j]所保存的值时顶点i到顶点j的路径中j的前驱顶点    
-    //A[n][n]矩阵来保存每部所求的的所有顶点对之间的当前最短路径长度  
-    int path[n][n];  
-    void Floyd(float A[n][n], float dist[n][n])  
-    {  
-        int MAX = 10000;  
-        int pre;
-        for(int i = 0; i < n; i++)  
+        //path给出了每一对顶点之间的最短路径,p[i][j]所保存的值时顶点i到顶点j的路径中j的前驱顶点    
+        //A[n][n]矩阵来保存每部所求的的所有顶点对之间的当前最短路径长度  
+        int path[n][n];  
+        void Floyd(float A[n][n], float dist[n][n])  
         {  
-            for(int j = 0; j < n; j++)  
-            {  
-                if(dist[i][j] != MAX)  
-                    path[i][j] = i+1;  
-                else  
-                    path[i][j] = 0;  
-                    
-                A[i][j] = dist[i][j];
-            }  
-            
-            
-            for(int k = 0; k < n; k++)  
-            {
-                for（int i = 0; i < n; i++)  
-                {  
-                    for(int j = 0; j < n; j++)  
-                    {  
-                        if(A[i][j] > A[i][k]+A[k][j])  
-                        {  
-                            A[i][j] = A[i][k] + A[k][j];
-                            path[i][j] = path[k][j];  
-                            
-                        }
-                    }
-                }
-            }  
+            int MAX = 10000;  
+            int pre;
             for(int i = 0; i < n; i++)  
             {  
                 for(int j = 0; j < n; j++)  
                 {  
-                    printf("%d %d", A[i][j], j);
-                    pre = path[i][j];
-                    while(pre!=0 && pre!=i+1)  
+                    if(dist[i][j] != MAX)  
+                        path[i][j] = i+1;  
+                    else  
+                        path[i][j] = 0;  
+                        
+                    A[i][j] = dist[i][j];
+                }  
+                
+                
+                for(int k = 0; k < n; k++)  
+                {
+                    for（int i = 0; i < n; i++)  
                     {  
-                        printf("<-%d", pre-1);
-                        pre = path[i][pre-1];
+                        for(int j = 0; j < n; j++)  
+                        {  
+                            if(A[i][j] > A[i][k]+A[k][j])  
+                            {  
+                                A[i][j] = A[i][k] + A[k][j];
+                                path[i][j] = path[k][j];  
+                                
+                            }
+                        }
                     }
-                    printf("<-%d\n", i);
-                    
+                }  
+                for(int i = 0; i < n; i++)  
+                {  
+                    for(int j = 0; j < n; j++)  
+                    {  
+                        printf("%d %d", A[i][j], j);
+                        pre = path[i][j];
+                        while(pre!=0 && pre!=i+1)  
+                        {  
+                            printf("<-%d", pre-1);
+                            pre = path[i][pre-1];
+                        }
+                        printf("<-%d\n", i);
+                        
+                    }
                 }
+                
+                
             }
-            
-            
-        }
     
     
     
