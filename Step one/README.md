@@ -1,6 +1,6 @@
-# 1.最短路(Floyd、Dijstra,BellmanFord)  
+# 1.最短路(Floyd、Dijkstra,BellmanFord)  
 
-## Floyd  
+## Dijkstra
 参考:  
 http://baike.baidu.com/item/%E8%BF%AA%E6%9D%B0%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95?fr=aladdin 
 
@@ -86,7 +86,78 @@ D[0]   D[1]   D[2]   D[3]   D[4]   D[5]
         return 0;
     }  
 
+西电版《数据结构与算法分析》 荣政主编  
 
+
+        float D[n];  
+        int p[n], s[n]; //p[i]表示从原点到达顶点i时，顶点i的前驱顶点  
+                        //s[i]记录最短路径生成的情况  
+                        //s[i]=1表示源点到顶点i的最短路径已经产生  
+                        //s[i]=0表示最短路径还没有产生  
+        void Dijkstra(int v, float dist[][n])  
+        {  
+            int MAX = 10000;  
+            int min, pre;  
+            for(int i = 0; i < n; i++)  
+            {  
+                D[i] = dist[v][i];  
+                
+                //以下部分感觉要修改  
+                //if(i != v   &&  D[i] != Max)  
+                //  p[i] = v+1;  
+                //else if(i == v)  
+                //  p[i] = -1;//自身的前驱顶点修改为-1：  
+                //else  
+                //  p[i] = 0;  
+                
+                
+                if(D[i]!=MAX)  
+                    p[i] = v+1;  
+                else  
+                    p[i] = 0;    
+                s[i] = 0;  
+            }  
+            
+            s[v]=1;
+            for(int i = 0; i < n; i++)
+            {
+                int min = MAX+1;
+                for(int j = 0; j < n; j++)
+                {
+                    if(!s[j] && D[j] < min)
+                    {
+                        min = D[j];
+                        k = j;
+                    }
+                }
+                s[k] = 1;
+                for(int j = 0; j < n; j++)
+                {
+                    if(!s[j] && D[j] > D[k]+dist[k][j])
+                    {
+                        D[j] = D[k]+dist[k][j];
+                        p[i] = k+1;
+                    }
+                }
+            }  
+            
+            //输出结果  
+            for(int i = 0; i < n; i++)  
+            {  
+                printf("%f%d", D[i], i);  
+                pre = p[i];  
+                while((pre!=0) && (pre!=v+1))  
+                {  
+                    printf("<-%d", pre-1);  
+                    pre = p[pre-1];  
+                }  
+                printf("<-%d", v);  
+            }  
+        }
+        
+    
+    
+    
 # 2.最小生成树  
 ## prim  
 ## kruscal
