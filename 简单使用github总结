@@ -15,7 +15,7 @@ git commit -m "init commit"
 
 6.完成上述部分就可以开始推送代码了
 第一次推送的时候要添加远程的代码库到配置
-git commit add origin http://github.com/witnessai/Git-learning.git
+git remote add origin http://github.com/witnessai/Git-learning.git
 orgin可变，随自己喜欢
 
 7.git push origin master
