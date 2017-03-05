@@ -1,0 +1,217 @@
+#引入二叉树的建立
+//创建二叉树
+typedef struct node{
+	int data;
+	struct node *lchild, *rchild;
+}bitree;
+bitree * root;
+bitree* CreateTree()
+{
+	char ch;
+	bitree *Q[MAXSIZE];
+	int front, rear;
+	bitree *root, *s;
+	root = NULL;
+	front = 1, rear = 0;
+	while((ch=getchar()) != '#')
+	{
+		s = NULL;
+		if(ch != '@')
+		{
+			s = (bitree *)malloc(size(bitree));
+			s->data = ch;
+			s->lchild = NULL:
+			s->rchild = NULL;
+		}
+		rear++;
+		Q[rear] = s;
+		if(rear == 1)
+			root = s;
+		else
+		{
+			if(s&&Q[front])
+			{
+				if(rear%2 == 0)
+					Q[front]->lchild = s;
+				else
+					Q[front]->rchild = s;
+			}
+			if(rear%2 == 1)
+				front++;
+		}
+	}
+	return root;
+}
+
+
+#二叉树的遍历
+##DFS 深度优先遍历 
+这里先介绍递归算法，比较简单容易理解
+二叉树的遍历按根的遍历顺序不同可以分为，先序遍历（根左右），中序遍历（左根右），后序遍历（左右根）
+
+
+###DFS 递归版本
+1.先序遍历
+void PreOrder(bitree *p)
+{
+	if(p != NULL)
+	{
+		printf("%c", p->data);
+		PreOrder(p->lchild);
+		PreOrder(p->rchild);
+	}
+}
+
+2.中序遍历
+void InOrder(bitree *p)
+{
+	if(p != NULL)
+	{
+		InOrder(p->lchild);
+		printf("%c", p->data);
+		InOrder(p->rchild);
+	}
+}
+
+3.后序遍历
+void PostOrder(bitree *p)
+{
+	if(p != NULL)
+	{
+		PostOrder(p->lchild);
+		PostOrder(p->rchild);
+		printf("%c", p->data);
+	}
+}
+
+###DFS非递归版本——代码为中序遍历
+
+
+
+
+##BFS 广度优先遍历
+void BFS(bitree * p)
+{
+	bitree *Q[MAXSIZE];
+	bitree *s;
+	int rear = 1, front = 0;
+	Q[rear] = p;
+	while(front < rear)
+	{
+		fornt++;
+		s = Q[front];
+		printf("%c", s->data);
+		
+		if(s->lchild != NULL)
+		{
+			//rear++;
+			Q[rear++] = s->lchild;
+		}
+		if(s->rchild != NULL)
+		{
+			//rear++;
+			Q[rear++] = s->rchild;
+		}
+	}
+}
+
+
+
+
+
+#hash表
+//hash表拉链法
+
+//定义hash表和基本数据节点
+typedef struct _NODE
+{
+    int data;
+    struct _NODE* next;
+}NODE;
+
+typedef struct _HASH_TABLE
+{
+    NODE* value[10];
+}HASH_TABLE;
+
+
+//创建hash表
+HASH_TABLE* create_hash_table()
+{
+    HASH_TABLE* pHashTb1 = (HASH_TABLE *)malloc(sizeof(HASH_TABLE));
+    memset(pHashTb1, 0, sizeof(HASH_TABLE));
+    return pHashTb1;
+}
+
+//在hash表当中查找数据
+NODE* find_dat_in_hash(HASH_TABLE* pHashTb1, int data)
+{
+    NODE* pNode;
+    if(NULL == pHashTb1)
+        return NULL;
+
+    if(NULL == (pNode = pHashTb1->value[data%10]))
+        return NULL;
+    
+    while(pNode)
+    {
+        if(data == pNode->data)
+            return pNode;
+        pNode = pNode->next;
+    }
+
+    return NULL;
+}
+
+//在hash表当中插入数据
+bool insert_data_into_hash(HASH_TABLE* pHashTb1, int data)
+{
+    NODE* pNode;
+    if(NULL == pHashTb1)
+        return false;
+    if(NULL == pHashTb1->value[data%10]){
+        pNode = (NODE*)malloc(sizeof(NODE));
+        pNode->data = data;
+        pHashTb1->value[data % 10] = pNode;
+        return true;
+    }
+
+    //这句貌似可以不要
+    if(NULL != find_data_in_hash(pHashTb1, data))
+        return false;
+
+    pNode = pHashTb1->value[data%10];
+    while(NULL != pNode->next)
+        pNode = pNode->next;
+
+    pNode->next = (NODE*)malloc(sizeof(NODE));
+    memset(pNode->next, 0, sizeof(NODE);
+    pNode->next->next = data;
+    return true;
+}
+
+//从hash表中删除数据
+bool delete_data_from_hash(HASH_TABLE* pHashTb1, int data)
+{
+    NODE* pHead;
+    NODE* pNode;
+    if(NULL == pHashTb1 || NULL == pHashTb1->value[data%10])
+        return false;
+
+    if(NULL == (pNode = find_data_in_hash(pHashTb1, data)))
+        return false;
+
+    if(pNode == pHashTb1->value[data%10])
+    {
+        pHashTb1->value[data%10] = pNode->next;
+        free(pNode);
+        return true;
+    }
+
+    pHead = pHashTb1->value[data%10];
+    while(pNode != pHead->next)
+        pHead = pHead->next;
+    pHead->next = pNode->next;
+    free(pNode);
+    return true;
+}
