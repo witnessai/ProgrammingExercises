@@ -1,0 +1,38 @@
+1.建立项目,进入项目文件夹
+
+2.初始化ssh key 参见官网指南.(本机生成一对key,public key传到官网sshkey下面) https://help.github.com/articles/generating-ssh-keys/
+
+3.初始化用户名,邮箱 $ git config --global user.name "defnngj"//给自己起个用户名 $ git config --global user.email "defnngj@gmail.com"//填写自己的邮箱
+
+4.git init
+
+5.git add .
+
+6.git commit -m "message for this commit"
+
+7.touch README.md
+
+8.git add README.md
+
+9.git status
+
+10.去github网站建立一个repo 如"ts.git"
+
+11.git remote add origin git@github.com:wuzhuzhu/ts.git 如果遇到了fatal: remote origin already exists.输入: git remote rm origin
+
+12.git remote add origin git@github.com:wuzhuzhu/ts.git
+
+13.git push -u origin master Counting objects: 19, done. Compressing objects: 100% (16/16), done. Writing objects: 100% (19/19), 4.54 KiB, done. Total 19 (delta 1), reused 0 (delta 0) To git@github.com:wuzhuzhu/ts.git [new branch] master -> master Branch master set up to track remote branch master from origin.
+
+
+
+
+拉取git文档: 在远程主机上:
+
+1. git remote add origin git@github.com:wuzhuzhu/ts.git
+2. git pull origin master
+遇见的问题:
+
+windows 客户端是渣...还是要用git shell 要不连创建repo都总是网络报错 远程服务器要搞定ssh key... git
+remote add origin git@github.com:wuzhuzhu/ts.git
+是指制定origin到这个git网址,不要重复绑定.
