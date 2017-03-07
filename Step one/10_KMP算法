@@ -1,0 +1,50 @@
+KMP算法
+
+而KMP就是保证i永远不回退，只回退j来使得匹配效率有所提升。
+KMP的next数组求法是很不容易搞清楚的一部分，也是最重要的一部分。
+参考两篇不错的教程：
+入门：http://www.cnblogs.com/yjiyjige/p/3263858.html
+强化next数组的概念：http://www.cnblogs.com/tangzhengyue/p/4315393.html
+
+next数组代码：
+void getNext(string s, int next[])
+{
+	int i = 0, j = -1;
+	while(i < s.size())
+	{
+		if(j == -1 || s[i] == s[j])
+		{
+			i++;
+			j++;
+			next[i] = j;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+
+}
+
+
+
+KMP算法主要部分：
+int index(string s, string t)
+{
+	int i = 0, j = 0;
+	while(i < s.size() && j < t.size())
+	{
+		if(j == -1 || s[i] == t[j])
+		{
+			i++;
+			j++;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+
+	if(j == t.size()) return i-t.size();
+	else	return -1;	
+}
