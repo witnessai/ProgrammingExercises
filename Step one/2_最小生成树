@@ -1,8 +1,8 @@
-# 2.最小生成树  
+# 2.��С������  
 
 
 ## prim  
-西电版数据结构课本， 荣政主编
+��������ݽṹ�α��� ��������
 typedef struct{
 	int frontvex, endvex;
 	float length;
@@ -56,29 +56,29 @@ void Prim(int i){
 
 ## kruscal
 
-克鲁斯卡尔（Kruskal）算法（只与边相关）
+��³˹������Kruskal���㷨��ֻ�����أ�
 
-算法描述：克鲁斯卡尔算法需要对图的边进行访问，所以克鲁斯卡尔算法的时间复杂度只和边又关系，可以证明其时间复杂度为O（eloge）。
-算法过程：
-1.将图各边按照权值进行排序
-2.将图遍历一次，找出权值最小的边，（条件：此次找出的边不能和已加入最小生成树集合的边构成环），若符合条件，则加入最小生成树的集合中。不符合条件则继续遍历图，寻找下一个最小权值的边。
-3.递归重复步骤1，直到找出n-1条边为止（设图有n个结点，则最小生成树的边数应为n-1条），算法结束。得到的就是此图的最小生成树。
+�㷨��������³˹�����㷨��Ҫ��ͼ�ı߽��з��ʣ����Կ�³˹�����㷨��ʱ�临�Ӷ�ֻ�ͱ��ֹ�ϵ������֤����ʱ�临�Ӷ�ΪO��eloge����
+�㷨���̣�
+1.��ͼ���߰���Ȩֵ��������
+2.��ͼ����һ�Σ��ҳ�Ȩֵ��С�ıߣ����������˴��ҳ��ı߲��ܺ��Ѽ�����С���������ϵı߹��ɻ������������������������С�������ļ����С��������������������ͼ��Ѱ����һ����СȨֵ�ıߡ�
+3.�ݹ��ظ�����1��ֱ���ҳ�n-1����Ϊֹ����ͼ��n����㣬����С�������ı���ӦΪn-1�������㷨�������õ��ľ��Ǵ�ͼ����С��������
 
-克鲁斯卡尔（Kruskal）算法因为只与边相关，则适合求稀疏图的最小生成树。而prime算法因为只与顶点有关，所以适合求稠密图的最小生成树。
+��³˹������Kruskal���㷨��Ϊֻ�����أ����ʺ���ϡ��ͼ����С����������prime�㷨��Ϊֻ�붥���йأ������ʺ������ͼ����С��������
 
-来源： http://blog.csdn.net/niushuai666/article/details/6689285
+��Դ�� http://blog.csdn.net/niushuai666/article/details/6689285
 
-代码参考西电数据结构课本，荣政主编
-课本代码有错误，有增删，测试（通过课本的样例）
+����ο��������ݽṹ�α�����������
+�α������д�������ɾ�����ԣ�ͨ���α���������
 #include <cstdio>
 #define MAX 1000
 typedef struct{
 	int frontvex, endvex;
 	float length;
-	int sign; //该边是否已选择过的标志信息
+	int sign; //�ñ��Ƿ���ѡ����ı�־��Ϣ
 }edge;
 edge g_T[MAX];
-int g_G[MAX]; //判断该边的两个顶点是否在同一个分量上的数组中
+int g_G[MAX]; //�жϸñߵ����������Ƿ���ͬһ�������ϵ�������
 void Kruskal(int n, int e)
 {
     int i, j, k, l, MinEdge, min;
@@ -115,14 +115,16 @@ void Kruskal(int n, int e)
             j++;
             for(i = 0; i < n; i++)
             {
-                if(g_G[i] == g_G[l] || g_G[i] == g_G[k])
-                    //g_G[i] = g_G[k];
-                    g_G[i] = 100;
+                //�����ɴ˲���ע�ʹ���ᱨ��
+                // if(g_G[i] == g_G[l] || g_G[i] == g_G[k])
+                //     //g_G[i] = g_G[k];
+                //     g_G[i] = 100;
+                g_G[l] = g_G[k] = -1;
             }
         }
     }
 }
-//打印输出结果
+//��ӡ������
 void print(int n, int e)
 {
     for(int i = 0; i < n; i++)
