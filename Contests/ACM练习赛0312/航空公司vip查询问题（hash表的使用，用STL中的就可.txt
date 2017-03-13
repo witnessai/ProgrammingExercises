@@ -1,0 +1,39 @@
+#include <iostream>
+#include <cstdio>
+#include <map>
+
+using namespace std;
+map<string, int>m;
+int main()
+{
+    int n, k;
+    int q;
+    freopen("in.txt", "r", stdin);
+    while(cin >> n >> k)
+    {
+        for(int i = 0; i < n; i++)
+        {
+            string s;
+            int t;
+            cin >> s >> t;
+            if(t < k) t = k;
+            if(m.count(s) > 0)
+                m[s] += t;
+            else
+                m[s] = t;
+        }
+        cin >> q;
+        for(int i = 0; i < q; i++)
+        {
+            string s;
+            cin >> s;
+            if(m.count(s) > 0)
+                cout << m[s] << endl;
+            else
+                cout << "No Info" << endl;
+
+        }
+    }
+
+    return 0;
+}

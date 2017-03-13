@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstdio>
+
+using namespace std;
+
+
+typedef struct {
+    int fromvex, endvex;
+    int cost;
+    int sign;
+}edge;
+int a, b;
+edge g_T[30];
+int g_G[15];
+
+void Kruskal(int n, int e)
+{
+    int i, j, k, l, MinEdge, min;
+    for(i = 0; i < n; i++)
+        g_G[i] = i;
+    for(i = 0; i < e; i++)
+    {
+        cin >> g_T[i].fromvex >> g_T[i].endvex >> g_T[i].cost;
+        g_T[i].sign = 0;
+    }
+    j = 0;
+    while(j < n-1)
+    {
+        min = 1000;
+        for(i = 0; i < e; i++)
+        {
+            if(g_T[i].sign == 0)
+            {
+                if(g_T[i].cost < min)
+                {
+                    min = g_T[i].cost;
+                    MinEdge = i;
+                    k = g_T[i].fromvex;
+                    l = g_T[i].endvex;
+                    //g_T[]
+
+                }
+            }
+
+        }
+
+        g_T[MinEdge].sign = 1;
+        if(g_G[k] == g_G[l])
+            g_T[MinEdge].sign = 2;
+        else
+        {
+            j++;
+            //for(i = 0; i < n; i++)
+            //    if(g_G[i] == g_G[l] || g_G[i] == g_G[k])
+            //        g_G[i] = -1;
+            g_G[l] = g_G[k] = -1;
+        }
+
+    }
+    int sum = 0;
+    int cnt = 0;
+    for(int i = 0; i < e; i++)
+        //cnt += -g_G[i];
+        if(g_T[i].sign == 1)
+            cnt++;
+
+    if(cnt != n-1) cout << "Impossible" << endl;
+    else
+    {
+        for(int i = 0; i < e; i++)
+            if(g_T[i].sign == 1)
+                sum+=g_T[i].cost;
+        cout << sum << endl;
+    }
+
+
+}
+int main()
+{
+    freopen("in.txt", "r", stdin);
+    while(cin >> a >> b)
+    {
+        Kruskal(a, b);
+    }
+
+    return 0;
+}

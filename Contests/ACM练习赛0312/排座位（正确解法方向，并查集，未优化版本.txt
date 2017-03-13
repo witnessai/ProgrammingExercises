@@ -1,0 +1,75 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+
+int pre[1050];
+int t[105][105];
+
+int Find(int x)
+{
+    int r = x;
+    while(r!=pre[r])
+        r = pre[r];
+    int i = x, j;
+    while(pre[i]!=r)
+    {
+        j = pre[i];
+        pre[i] = r;
+        i = j;
+    }
+    return r;
+}
+
+void mix(int x, int y)
+{
+    int fx = Find(x), fy=Find(y);
+    if(fx!=fy)
+    {
+        pre[fy] = fx;
+    }
+}
+
+int main()
+{
+    freopen("in.txt", "r", stdin);
+    int n, m, q;
+    while(~scanf("%d%d%d", &n, &m, &q))
+    {
+        memset(t, 0, sizeof(t));
+        for(int i = 1; i <= n; i++)
+            pre[i] = i;
+        for(int i = 1; i <= m; i++)
+        {
+            int a, b, x;
+            scanf("%d%d%d", &a, &b, &x);
+            if(x == 1)
+                mix(a, b);
+            else if(x == -1)
+            {   t[a][b] = -1;
+                t[b][a] = -1;
+            }
+        }
+        for(int i = 0; i < q; i++)
+        {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            if(t[a][b] == 0)
+            {
+                if(Find(a) == Find(b))
+                    printf("No problem\n");
+                else
+                    printf("OK\n");
+            }
+            else
+            {
+                if(Find(a) == Find(b))
+                    printf("OK but\n");
+                else
+                    printf("No way");
+            }
+        }
+    }
+
+    return 0;
+}
