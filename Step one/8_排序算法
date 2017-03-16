@@ -1,0 +1,179 @@
+关于排序算法的整理
+
+一、冒泡排序
+参考：http://www.cnblogs.com/banana201/p/4928733.html
+举例从小到大的冒泡排序算法，具体实现：从数组的第一个元素a[0]开始，两两比较a[i],a[i+1],如果前面的数大于后面的数a[i]>a[i+1]，那么交换两个元素的位置，把大的数往后移动。这样一次经过一轮比较以后，最大的数将会被交换到最后的位置a[n-1]
+
+代码如下：
+void bubblesort(int a[], int n)
+{
+	for(int i = 0; i < n; i++)//外层循环控制循环次数
+	{
+		for(int j = 0; j < n-1-i; j++)//内层循环控制每次循环里比较的次数
+		{
+			if(a[j]>a[j+1])
+			{
+				int t = a[j];
+				a[j] = a[j+1];
+				a[j+1] = t;
+			}
+		}
+	}
+}
+
+
+
+
+二、选择排序
+参考：http://www.cnblogs.com/banana201/p/4928733.html
+选择排序就是在外层每次循环中选择出你需要的最值，然后把这个最值同这一轮中最前面的元素进行交换，所以这个算法的关键就是要记录每次比较的结果，即每次比较后最值的位置。
+
+void selectionsort(int a[], int n)
+{
+	for(int i = 0; i < n-1; i++)
+	{
+		int k = i;
+		for(int j = i+1; j < n; j++)
+		{
+			if(a[j] < a[k])
+				k = j;
+		}
+		if(i != k)
+		{
+			int t  = a[k];
+			a[i] = a[k];
+			a[k] = t;
+		}
+	}
+}
+
+
+
+三、希尔排序
+
+ElementType Median(ElementType A[], int N)  
+{  
+    int i, j, Increment;  
+    ElementType Tmp;  
+    for (Increment = N / 2; Increment > 0; Increment /= 2) { //设置增量，一般为数组长度的一半  
+        for (i = Increment; i < N; i++) {  
+            Tmp = A[i];//将A[5]的值存到临时变量temp中  
+            for (j = i; j >= Increment; j -= Increment) {  
+                if (Tmp < A[j - Increment])//如果A[5]的值小于A[0]，则把A[0]的值赋给A[5]  
+                {  
+                    A[j] = A[j - Increment];  
+                }  
+                else  
+                    break;  
+            }  
+            A[j] = Tmp;//因为J经过递减，此时A[J]其实为A[0]，把TEMP中A[5]的初始值赋予A[0]，完成两个位置的值的交换  
+        }  
+    }  
+    return A[N / 2];  
+}  
+
+
+四、快速排序
+
+//快速排序
+快速排序是C.R.A.Hoare于1962年提出的一种划分交换排序。它采用了一种分治的策略，
+通常称其为分治法(Divide-and-ConquerMethod)。
+
+该方法的基本思想是：
+
+1．先从数列中取出一个数作为基准数。
+2．分区过程，将比这个数大的数全放到它的右边，小于或等于它的数全放到它的左边。
+3．再对左右区间重复第二步，直到各区间只有一个数。
+
+虽然快速排序称为分治法，但分治法这三个字显然无法很好的概括快速排序的全部步骤。
+因此我的对快速排序作了进一步的说明：挖坑填数+分治法
+
+对挖坑填数进行总结
+
+1．i =L; j = R; 将基准数挖出形成第一个坑a[i]。
+
+2．j--由后向前找比它小的数，找到后挖出此数填前一个坑a[i]中。
+
+3．i++由前向后找比它大的数，找到后也挖出此数填到前一个坑a[j]中。
+
+4．再重复执行2，3二步，直到i==j，将基准数填入a[i]中。
+
+
+//挖坑填数部分代码
+int AdjustArray(int s[], int l, int r)
+{
+	int i = l, j = r;
+	int x = s[1];
+	while(i < j)
+	{
+		while(i < j && s[j] >= x)
+		j--;
+		if(i < j)
+		{
+			s[i] = s[j];
+			i++;
+		}
+		while(i < j && s[i] < x)
+			i++;
+		if(i < j)
+		{
+			s[j] = s[i];
+			j--;
+		}
+	}
+	//最后一定有i==j
+	s[i] = x;
+	return i
+}
+
+
+//分治法部分代码
+void quick_sort1(int s[], int l, int r)
+{
+	if(l < r)
+	{
+		int i = AdjustArray(s, l, r);
+		quick_sort1(s, l, i-1);
+		quick_sort1(s, i+1, r);
+	}
+}
+
+
+
+
+
+//将两部分代码综合并优化代码
+void quick_sort(int s[], int l, int r)
+{
+	int i = l, j = r;
+	int x = s[1];
+	while(i < j)
+	{
+		while(i < j && s[j] >= x)
+			j--;
+		if(i < j)
+		{
+			s[i] = s[j];
+			i++;
+		}
+
+		while(i < j && s[i] < x)
+			i++;
+		if(i < j)
+		{
+			s[j] = s[i];
+			j--;
+		}
+	}
+	s[i] = x;
+	quick_sort(s, l, i-1);
+	quick_sort(s, i+1, r);
+}
+
+	快速排序还有很多改进版本，如随机选择基准数，区间内数据较少时直接用
+另的方法排序以减小递归深度。有兴趣的筒子可以再深入的研究下。
+
+ 
+
+注1，有的书上是以中间的数作为基准数的，要实现这个方便非常方便，直接将
+中间的数和第一个数进行交换就可以了
