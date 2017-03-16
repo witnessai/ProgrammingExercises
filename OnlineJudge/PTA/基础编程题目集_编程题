@@ -103,3 +103,133 @@ int main()
 
 
 5-18 二分法求多项式单根 
+根据题目一步步写就可以
+#include <bits/stdc++.h>
+
+using namespace std;
+#define f(x) (a3*pow(x,3)+a2*pow(x,2)+a1*x+a0)
+const double eps = 7e-3;
+
+int main()
+{
+    //freopen("in.txt", "r", stdin);
+    double a3, a2, a1, a0;
+    scanf("%lf%lf%lf%lf", &a3,&a2, &a1, &a0);
+    double a, b, m;
+    scanf("%lf%lf%lf", &a, &b, &m);
+    while(b-a>eps )
+    {
+        m = (a+b)/2;
+        if(f(m) == 0) {printf("%.2f", m);break;}
+        else if(f(m)*f(a)>0) a = m;
+        else b = m;
+
+    }
+    if(b-a<=eps)
+    printf("%.2f", m);
+    return 0;
+}
+
+
+5-19支票面额
+数据量小，直接暴力搜索比较简单
+goto语句跳出多重循环，跳到 exit标记那
+exit标记那要一个语句，所以用;作为空语句
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int n;
+
+    while(cin >> n)
+    {
+
+        for(int i = 0; i < 100; i++)
+        {
+            for(int j = 0; j < 100; j++)
+            {
+                if(2*j*100+2*i+n == i*100+j)
+                {
+                    cout << j << '.' << i << endl;
+                    goto exit;
+                }
+            }
+        }
+        cout << "No Solution\n";
+        exit:
+        ;
+    }
+}
+
+
+5-29 删除字符串中的子串
+借这道题，这里顺便总结下c++中getline(), gets()函数的用法
+参考：http://blog.csdn.net/JIEJINQUANIL/article/details/50802902
+c++常见的输入有
+cin, cin.get(), cin.getline(),getline(), gets()
+
+（一）cin
+1.输入一个数字，回车结束输入
+2.接受一个字符串，遇到空格，Tab,或者回车结束输入
+（二）cin.get()
+cin.get(字符变量名)接收字符
+cin.get(字符数组名，接收字符数目)用来接收一行字符串，可以接收空格
+cin.get(无参数)用于舍弃输入流中不需要的字符，例如舍弃回车
+（三）cin.getline()
+接收一个字符串，可以接受空格
+！！注意
+cin.getline()实际上有三个参数，cin.getline(接受字符数组名,接受个数,结束字符) 
+（四）getline()
+接收一个字符串，可以接收空格并输出
+！！需要引用头文件
+（五）gets()
+接收一个字符串，可以接收空格并输出
+！！需要引用头文件
+
+
+
+代码一：
+#include<iostream>  
+#include<string>  
+using namespace std;  
+  
+int main()  
+{  
+    string a(81, '\0'), b(81, '\0');  
+    int i;  
+    getline(cin, a, '\n');  
+    getline(cin, b, '\n');  
+  
+    while ((i = a.find(b)) != string::npos)  
+        a.replace(i, b.size(), "");  
+  
+    cout << a;  
+    return 0;  
+}  
+
+
+代码二：
+#include<stdio.h>
+#include<string.h>
+
+int main(void)
+{
+    char a[81];
+    gets(a);
+    char b[81];
+    gets(b);
+    
+    char *p;    
+    char c[81];
+    while((p=strstr(a,b)) != NULL) { //strstr 找不到返回 NULL 
+        *p = '\0'; // 指定连接下一步（连接函数）之前 a 的终止位置； 
+        strcpy (c, p+strlen(b)); // strcat 函数中的两个传入参数的内存地址不能重叠，所以这里用 c 当作 temp 
+        strcat (a, c);
+    } 
+
+    puts(a);
+    
+    return 0;
+}
