@@ -1,0 +1,105 @@
+https://pta.patest.cn/pta/test/14/exam/4
+
+5-1 厘米换算英尺英寸
+分离整数和小数部分
+
+5-2 然后是几点
+进位加减法处理下，仔细读题即可
+
+5-3 逆序的三位数
+模10后输出非零值
+特殊输出零值
+
+5-4 BCD解密
+自己写的很繁琐
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    while(cin >> n)
+    {
+        int a[10];
+        int c = 0;
+        if(n == 0 ) {cout << 0 << endl;continue;}
+        while(n)
+        {
+            a[c] = n%16;
+            n /= 16;
+            c++;
+        }
+        for(int i = c-1; i >= 0; i--)
+            cout << a[i];
+        cout << endl;
+    }
+}
+
+
+大牛写的，简单易懂
+#include <stdio.h>  
+int main()  
+{  
+    int x;  
+    scanf("%d", &x);  
+    int n;  
+    n = x / 16 * 10 + (x - x / 16 * 16);  
+    printf("%d", n);  
+  
+    return 0;  
+}  
+
+
+5-16 求符合给定条件的整数集
+这题简单，当时没仔细想
+因为涉及的数据长度不大，多重for循环就可以搞定
+#include <bits/stdc++.h>
+
+using namespace std;
+int op[255];
+
+int main()
+{
+    int x;
+    cin >> x;
+    int cnt = 1;
+    for(int i = x; i < x+4; i++)
+    {
+        for(int j = x; j < x+4; j++)
+        {
+            for(int k = x; k < x+4; k++)
+            {
+                if(k == i || k == j || i == j)  continue;
+                else
+                {
+                    cout << i << j << k;
+                    if(cnt%6 == 0) cout << endl;
+                    else cout << ' ';
+                    cnt++;
+                }
+            }
+        }
+    }
+}
+
+
+5-17 爬动的蠕虫
+见过很多次这种智力题
+直接搜索求解
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    int a, b, c;
+    cin >> a>> b >> c;
+    for(int i = 0; i < a; i++)
+    {
+        if((b-c)*i+b>=a) {cout << i*2+1 << endl;break;}
+    }
+}
+
+
+5-18 二分法求多项式单根 
