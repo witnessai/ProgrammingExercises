@@ -183,11 +183,17 @@ cin.get(无参数)用于舍弃输入流中不需要的字符，例如舍弃回�
 cin.getline()实际上有三个参数，cin.getline(接受字符数组名,接受个数,结束字符) 
 （四）getline()
 接收一个字符串，可以接收空格并输出
+直接使用getline(str)，str默认是char *类型的
+若要向string类型输入一行字符串，则必须getline(cin, t)
 ！！需要引用头文件
 （五）gets()
 接收一个字符串，可以接收空格并输出
 ！！需要引用头文件
 
+
+
+再来说下这个题目，这个题目难的地方在于删除找到的字符串后，剩下的字符串前后
+拼接有可能会形成新的待删除字符串
 
 
 代码一：
@@ -201,7 +207,9 @@ int main()
     int i;  
     getline(cin, a, '\n');  
     getline(cin, b, '\n');  
-  
+   	
+   	//若在a中找到b则返回找到的第一个字符的索引
+   	//没有找到则返回string::npos
     while ((i = a.find(b)) != string::npos)  
         a.replace(i, b.size(), "");  
   
@@ -231,5 +239,175 @@ int main(void)
 
     puts(a);
     
+    return 0;
+}
+
+
+代码三：
+自己造轮子，不用库函数
+#include<stdio.h>
+
+int main ()
+{
+    char s1[81], s2[81];
+    gets(s1);
+    gets(s2);
+    
+    int i = 0, j = 0, count = 0;
+    while (s1[i] != NULL) { 
+        if (s2[count]==NULL && count>0) {
+            j = i - count;
+            while (s1[i] != NULL) {
+                s1[j++] = s1[i++];
+            }
+            s1[j] = NULL;
+            i = 0;  
+            count = 0;
+            continue;
+        } 
+        if (s1[i] == s2[count]) {
+            count ++;
+        } else if (s1[i] == s2[0]) {
+            count = 1; // 每一次不再匹配后，都要再和子串的第一个字符比较，以免漏过如s1为ccat (s2为 cat)的情况  
+        } else {
+            count = 0;
+        }
+        i++;
+    }
+    if (s2[count]==NULL && count>0) {
+        s1[i-count] = NULL; 
+    } //处理要删除的字串在 s1 末尾的情况 
+    puts(s1); //puts 函数遇 NULL 才会结束 
+    return 0; 
+}
+
+注：题目给的样例是
+输入：Tomcat is a male ccatat
+	  cat
+输出：Tom is a male
+
+这个样例包含了很多细节，其中一个就是ccatat
+删除了一次cat之后又剩下cat，所以要判断新的字符串是否包含子串
+所以代码三中i直接赋值为0，从头开始寻找
+if (s2[count]==NULL && count>0) {
+            j = i - count;
+            while (s1[i] != NULL) {
+                s1[j++] = s1[i++];
+            }
+            s1[j] = NULL;
+            i = 0;  
+            count = 0;
+            continue;
+} 
+
+
+5-32 说反话加强版
+复习下c++ istringstream的输入方式
+这里的编程题貌似要求c语言，不用c++
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string s[500001];
+int main()
+{
+    //freopen("in.txt", "r", stdin);
+    string t;
+    int i = 0;
+    while(getline(cin, t))
+    {
+        istringstream in(t);
+        while(in >> s[i])
+            i++;
+
+        for(int k = i-1; k > 0; k--)
+        cout << s[k] << ' ';
+        cout << s[0];
+
+    }
+    return 0;
+}
+
+
+
+5-38 数列求和加强版
+
+先贴上自己最开始的思路，代码在最后的测试点超时
+因为有两个for循环，程序不够简洁
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    //freopen("in.txt", "r", stdin);
+    int s[105000];
+    int sum[100050];
+    int a, b;
+
+    while(cin >> a >> b)
+    {
+
+        memset(s, 0, sizeof(s));
+        memset(sum, 0, sizeof(sum));
+        int len = 1;
+        for(int i = 1; i <= b; i++)
+        {
+            s[i-1] = a;
+            //cout << tmp << endl;
+            int carry = 0;
+            for(int j = 0;  j < len; j++)
+            {
+                int x = s[j];
+                int _c = sum[j];
+                sum[j] = (_c+x+carry)%10;
+                carry = (_c+x+carry)/10;
+                //for(int k = 0; k < len; k++) cout << sum[k]; cout << endl;
+                if(j == len-1 && carry > 0 || j == len-1 && s[j+1])
+                    len++;
+            }
+
+        }
+        for(int i = len-1; i >= 0; i--)
+            cout << sum[i];
+        cout << endl;
+
+    }
+    return 0;
+}
+
+
+
+代码简化：
+一个for循环搞定
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+    //freopen("in.txt", "r", stdin);
+    int s[105000];
+    int a, b;
+
+    while(cin >> a >> b)
+    {
+
+        memset(s, 0, sizeof(s));
+        if(b == 0) {printf("0\n"); continue;}
+        int x=0, cnt=0;
+        for(int i = b; i >= 1; i--)
+        {
+            s[cnt++] = (i*a+x)%10;
+            x = (i*a+x)/10;
+        }
+        if(x > 0) printf("%d", x);
+        for(int i = cnt-1; i >= 0; i--)
+            printf("%d", s[i]);
+        printf("\n");
+
+    }
     return 0;
 }
