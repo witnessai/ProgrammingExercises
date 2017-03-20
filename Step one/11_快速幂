@@ -1,0 +1,95 @@
+11. 快速幂
+
+1）什么是快速幂？
+请计算3的27次方
+如果你是一个数一个数去乘的话，我们假设每一次乘法所需要的时间和草稿纸上的演算量是一样的，我们需要计算26次乘法。
+但是，如果能够减少计算量的话：
+
+2）怎么减少计算量？
+还是那个计算3的27次方
+我们把这个计算分解成 3的13 次方 乘以 3的14次方
+之后，我们的问题便简化为两个子问题。
+对于3的14次方，我们可以去计算 3的7次方 乘以 3的7次方
+对于3的7次方，我们可以去计算 3的3次方 乘以 3的4次方
+
+
+编码：
+typedef long long LL;
+LL fun(LL x, LL n)
+{
+	LL res = 1;
+	while(n > 0)
+	{
+		if(n & 1)
+			res = (res*x)%MAX;
+		x = (x*x)%MAX;
+		n >>= 1;
+	}
+	return res;
+}
+参考博文：http://blog.csdn.net/y990041769/article/details/22311889
+
+那么假如让你求一个矩阵的很大的次方幂呢，当然我们同样可以求解。
+方法和上面的方法一模一样，只是把数 x 变成了一个矩阵。
+
+注意代码中矩阵的存法，很好用，题目链接：http://acm.nyist.net/JudgeOnline/problem.php?pid=148
+
+
+
+代码矩阵快速幂：
+#include <cstdio>  
+#include <iostream>  
+#include <vector>  
+  
+using namespace std;  
+typedef vector<int> vec;  
+typedef vector<vec> mat;  
+typedef long long LL;  
+const int N = 10000;  
+mat mul(mat a,mat b)  //矩阵乘法  
+{  
+    mat c(a.size(),vec(b[0].size()));  
+    for(int i=0;i<a.size();i++)  
+    {  
+        for(int k=0;k<b.size();k++)  
+        {  
+            for(int j=0;j<b[0].size();j++)  
+                c[i][j] = ( c[i][j] + a[i][k] * b[k][j] ) % N;  
+        }  
+    }  
+    return c;  
+}  
+  
+mat solve_pow(mat a,int n) //快速幂  
+{  
+    mat b(a.size(),vec(a.size()));  
+    for(int i=0;i<a.size();i++)  
+        b[i][i]=1;  
+    while(n>0)  
+    {  
+        if(n & 1)  
+            b=mul(b,a);  
+        a=mul(a,a);  
+        n >>= 1;  
+    }  
+  
+    return b;  
+}  
+LL n;  
+void solve()  
+{  
+    mat a(2,vec(2));  
+    while(~scanf("%d",&n) && n!=-1)  
+    {  
+        a[0][0]=1,a[0][1]=1;  
+        a[1][0]=1,a[1][1]=0;  
+        a=solve_pow(a,n);  
+        printf("%d\n",a[1][0]);  
+    }  
+}  
+int main()  
+{  
+    solve();  
+    return 0;  
+}  
+
