@@ -25,7 +25,7 @@ int binary_search_1(int a[], int n, int key)
     int m, l = 0, r = n-1;//闭区间[0, n-1]  
     while(l < r)  
     {  
-        m = l+(r-l)>>2;//向下取整  
+        m = l+((r-l)>>1);//向下取整  
         if(a[m] < key) l = m+1;  
         else r = m;  
     }  
@@ -39,7 +39,7 @@ int binary_search_2(int a[], int n, int key)
     int m, l = 0, r = n-1;//闭区间[0, n-1]
     while(l < r)
     {
-        m = l+(r-l+1)>>2;//向上取整
+        m = l+((r-l+1)>>1);//向上取整
         if(a[m] <= key) l = m;
         else r = m-1;
     }
@@ -53,7 +53,7 @@ int binary_search_3(int a[], int n, int key)
     int m, l = 0, r = n-1;
     while(l < r)
     {
-        m = l+(r-l)>>2;
+        m = l+((r-l)>>1);
         if(a[m]<=key) l = m+1;
         else r = m;
     }
@@ -67,7 +67,7 @@ int binary_search_4(int a[], int n, int key)
     int m, l = 0, r = n-1;
     while(l < r)
     {
-        m = l+(r-l+1)>>2;
+        m = l+((r-l+1)>>1);
         if(a[m]\<key) l = m;
         else r = m-1;
     }
