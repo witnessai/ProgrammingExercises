@@ -1,0 +1,73 @@
+/*
+ID: scottn1
+PROG: namenum
+LANG: C++
+*/
+#include <bits/stdc++.h>
+//自己写的，最后一个样例超时= =
+using namespace std;
+int p;
+int n;
+int flag = 0;
+typedef struct node
+{
+    char a, b, c;
+}Node;
+Node A[10];
+vector<string> dict;
+string str;
+
+bool isExist(string t)
+{
+    if(find(dict.begin(), dict.end(), t) != dict.end())
+        return true;
+    return false;
+}
+
+
+void solve(string s, int x)
+{
+    if(x > n-1) {if(isExist(str)) {cout << str << endl;flag=1;}return;}
+    char ch = s[0];
+    s.erase(s.begin());
+    str += A[ch-48].a;  solve(s, x+1);
+    str.erase(str.end()-1);
+    str+=A[ch-48].b; solve(s, x+1);
+    str.erase(str.end()-1);
+    str+=A[ch-48].c; solve(s, x+1);
+    str.erase(str.end()-1);
+
+}
+
+
+
+
+int main()
+{
+    ifstream in("dict.txt");
+    string _t;
+    while(in >> _t)
+        dict.push_back(_t);
+    in.close();
+    A[2].a = 'A'; A[2].b='B'; A[2].c='C';
+    A[3].a = 'D'; A[3].b='E'; A[3].c='F';
+    A[4].a = 'G'; A[4].b='H'; A[4].c='I';
+    A[5].a = 'J'; A[5].b='K'; A[5].c='L';
+    A[6].a = 'M'; A[6].b='N'; A[6].c='O';
+    A[7].a = 'P'; A[7].b='R'; A[7].c='S';
+    A[8].a = 'T'; A[8].b='U'; A[8].c='V';
+    A[9].a = 'W'; A[9].b='X'; A[9].c='Y';
+    freopen("namenum.in", "r", stdin);
+    freopen("namenum.out", "w", stdout);
+
+    string s;
+    while(cin >> s)
+    {
+        p = 0;
+        str = "";
+        n = s.size();
+        solve(s, p);
+        if(!flag)cout<<"NONE"<<endl;
+    }
+    return 0;
+}

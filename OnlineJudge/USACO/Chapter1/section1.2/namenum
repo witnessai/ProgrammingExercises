@@ -1,0 +1,59 @@
+/*
+ID: scottn1
+PROG: namenum
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+map<string, set<string> >mp;
+char rec[255];
+
+int main()
+{
+
+    rec['A'] = 2; rec['B']=2;rec['C']=2;
+    rec['D'] = 3; rec['E']=3;rec['F']=3;
+    rec['G'] = 4; rec['H']=4;rec['I']=4;
+    rec['J'] = 5; rec['K']=5;rec['L']=5;
+    rec['M'] = 6; rec['N']=6;rec['O']=6;
+    rec['P'] = 7; rec['R']=7;rec['S']=7;
+    rec['T'] = 8; rec['U']=8;rec['V']=8;
+    rec['W'] = 9; rec['X']=9;rec['Y']=9;
+
+    ifstream in("dict.txt");
+    string _t;
+    while(in >> _t)
+    {
+        string s = "";
+        for(int i = 0; i < _t.size(); i++)
+        {
+            s += rec[_t[i]]+48;
+        }
+        mp[s].insert(_t);
+
+    }
+    in.close();
+
+    freopen("namenum.in", "r", stdin);
+    freopen("namenum.out", "w", stdout);
+
+    string s;
+    while(cin >> s)
+    {
+        if(mp.count(s)>0)
+        {
+            set<string> tmp = mp[s];
+            set<string>::iterator it;
+            string s[500];int i = 0;
+            for(it = tmp.begin(); it!=tmp.end(); it++)
+                s[i++] = *it;
+            sort(s, s+i);
+            for(int j = 0; j < i; j++)
+                cout << s[j]<<endl;
+        }
+        else
+            cout << "NONE" << endl;
+    }
+    return 0;
+}
