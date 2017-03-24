@@ -1,0 +1,61 @@
+/*
+ID: scottn1
+PROG: milk2
+LANG: C++
+*/
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef struct node{
+    int b;
+    int e;
+}Node;
+Node a[5050];
+
+bool cmp(Node x, Node y)
+{
+    return x.b < y.b;
+}
+
+int main()
+{
+    freopen("milk2.in", "r", stdin);
+    freopen("milk2.out", "w", stdout);
+
+    int n;
+    while(cin >> n)
+    {
+        memset(a, 0, sizeof(a));
+        for(int i = 0; i < n; i++)
+        {
+            cin >> a[i].b >> a[i].e;
+        }
+        sort(a, a+n, cmp);
+        int ma = a[0].e - a[0].b;
+        int start = a[0].b;
+        int finish = a[0].e;
+        int mb = 0;
+        for(int i = 1; i < n; i++)
+        {
+            if(a[i].b <= finish && a[i].e <= finish){}
+            else if(a[i].b <= finish && a[i].e > finish)
+            {
+
+                ma = max(ma, a[i].e-start);
+                finish = a[i].e;
+
+            }
+            else if(a[i].b > finish)
+            {
+                ma = max(ma, a[i].e-a[i].b);
+                mb = max(mb, a[i].b-finish);
+                start = a[i].b;
+                finish = a[i].e;
+            }
+        }
+
+        cout << ma << " " << mb << endl;
+
+    }
+    return 0;
+}
