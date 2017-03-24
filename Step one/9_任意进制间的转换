@@ -1,0 +1,40 @@
+1.用itoa函数实现任意进制转换
+
+
+
+
+itoa(i,num,10); 
+i   需要转换成字符的数字 
+num   转换后保存字符的变量 
+10   转换数字的基数（进制）10就是说按照10进制转换数字。还可以是2，8，16等等你喜欢的进制类型
+
+itoa(数字,   字符串指针,   进制);
+
+参考代码一：
+
+#include   <stdlib.h>     
+#include   <stdio.h>     
+  
+int   main(void)     
+{     
+      int   number   =   12345;     
+      char   string[25];     
+     itoa(number,   string,   10);     
+      printf( 'integer   =   %d   string   =   %s/n ',   number,   string);     
+      return   0;     
+}  
+
+
+参考代码二：
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <string.h>  
+int main()  
+{  
+  int N,P; char T[33];  
+  scanf("%d %d",&N,&P);  
+  printf("%s",strupr(itoa(N,T,P)));  //strupr将字母转换成大写，itoa的返回值应该就是转成后字符串的首地址
+  return 0;  
+}  
+
+
