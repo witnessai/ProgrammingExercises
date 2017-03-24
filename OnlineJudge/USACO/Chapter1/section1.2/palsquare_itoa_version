@@ -1,0 +1,49 @@
+/*
+ID: scottn1
+PROG: palsquare
+LANG: C++
+*/
+#include <bits/stdc++.h>
+//听说USACO限制了很多库函数,itoa没法使用了，所以这个代码通不过
+using namespace std;
+
+bool isFlag(char str[])
+{
+    int i;
+    for(i = 0; i < 10; i++)
+    {
+        if(str[i] == '\0') break;
+    }
+    int j, k;
+    for(j = 0, k = i-1; j < k; j++, k--)
+    {
+        if(str[j] != str[k])break;
+    }
+    if(j>=k)return true;
+    return false;
+}
+
+int main()
+{
+    int x;
+    freopen("palsquare.in", "r", stdin);
+    freopen("palsquare.out", "w", stdout);
+    while(cin >> x)
+    {
+
+        char s[10];
+        for(int i = 1; i <= 300; i++)
+        {
+            //memset(s, 0, sizeof(s));
+            itoa(i*i, s, x);
+            if(isFlag(s))
+            {
+                printf("%s", strupr(itoa(i, s, x)));
+                //cout << strupr(itoa(i, s, x) << endl;
+                printf(" %s\n", strupr(itoa(i*i, s, x)));
+                //cout << ' ' << strupr(itoa(i*i, s, x)) << endl;
+            }
+        }
+    }
+    return 0;
+}
