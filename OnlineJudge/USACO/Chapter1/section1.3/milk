@@ -1,0 +1,55 @@
+/*
+ID: scottn1
+PROG: milk
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef struct node
+{
+    int money;
+    int weight;
+}Node;
+Node A[5010];
+
+bool cmp(Node a, Node b)
+{
+    return a.money < b.money;
+}
+int main()
+{
+    int n, m;
+    freopen("milk.in", "r", stdin);
+    freopen("milk.out", "w", stdout);
+    while(cin >> n >> m)
+    {
+
+        for(int i = 0; i < m; i++)
+        {
+            cin >> A[i].money >> A[i].weight;
+        }
+        sort(A, A+m, cmp);
+        int weight=0;
+        int sum=0;
+        for(int i = 0; i < m; i++)
+        {
+            if(weight >= n)break;
+            else if(weight+A[i].weight<n)
+            {
+                weight += A[i].weight;
+                sum+=A[i].money*A[i].weight;
+
+            }
+            else if(weight+A[i].weight>=n)
+            {
+
+                sum+=A[i].money*(n-weight);
+                weight = n;
+            }
+
+        }
+        cout << sum << endl;
+    }
+    return 0;
+}

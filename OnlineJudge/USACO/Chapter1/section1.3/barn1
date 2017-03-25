@@ -1,0 +1,79 @@
+/*
+ID: scottn1
+PROG: barn1
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+//一开始想用动态规划做，不知道怎么设置状态，无从下手
+//然后看了这一章的主题是贪心，然后仔细思考了一下贪心策略的思想，AC
+int a[201];
+int g[201];
+vector<int > vec;
+int main()
+{
+    int m, s, c;
+    freopen("barn1.in", "r", stdin);
+    freopen("barn1.out", "w", stdout);
+
+    while(cin >> m >> s >> c)
+    {
+        for(int i = 0; i < c; i++)
+        {
+            int _t;
+            cin >> _t;
+            a[_t] = 1;
+        }
+        int N = m;
+        memset(g, 0, sizeof(g));
+        g[0] = 0;
+        int flag_start = 0;
+        int finish;
+        for(int i = 1; i < 201; i++)
+        {
+            if(a[i]==0)
+            {
+                g[i]=g[i-1];
+            }
+            else if(a[i]==1 && !flag_start)
+            {
+                finish = i;
+                g[i] = 1;
+                flag_start = 1;
+                N--;
+            }
+            else if(a[i]==1 && flag_start)
+            {
+                if(a[i-1]==1)
+                {
+                    g[i]=g[i-1]+1;
+                    finish=i;
+
+                }
+                else if(N>0)
+                {
+                    g[i]=g[i-1]+1;
+                    N--;
+
+                    vec.push_back(i-finish);
+                    sort(vec.begin(), vec.end());
+                    finish=i;
+
+                }
+                else
+                {
+
+                    vec.push_back(i-finish);
+                    sort(vec.begin(), vec.end());
+                    g[i] = g[i-1]+vec.front();
+                    vec.erase(vec.begin());
+                    finish = i;
+
+                }
+            }
+        }
+        cout << g[200]  << endl;
+    }
+    return 0;
+}
