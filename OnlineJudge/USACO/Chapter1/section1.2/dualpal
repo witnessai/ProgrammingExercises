@@ -1,0 +1,71 @@
+/*
+ID: scottn1
+PROG: dualpal
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+
+char *itoa(int value,char *string,int radix)
+{
+    char zm[37]="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char aa[100]={0};
+
+    int sum=value;
+    char *cp=string;
+    int i=0;
+    while(sum>0)
+    {
+        aa[i++]=zm[sum%radix];
+        sum/=radix;
+    }
+
+    for(int j=i-1;j>=0;j--)
+    {
+        *cp++=aa[j];
+    }
+    *cp='\0';
+    return string;
+}
+
+bool isFlag(char str[])
+{
+    int i;
+    for(i = 0; i < 30; i++)
+    {
+        if(str[i] == '\0') break;
+    }
+    int j, k;
+    for(j = 0, k = i-1; j < k; j++, k--)
+    {
+        if(str[j] != str[k])break;
+    }
+    if(j>=k)return true;
+    return false;
+}
+
+int main()
+{
+    int n, m;
+    freopen("dualpal.in", "r", stdin);
+    freopen("dualpal.out", "w", stdout);
+    while(cin >> n >> m)
+    {
+
+        char s[20];
+        int amt = 0;
+        for(int i = m+1; i < 1000000; i++)
+        {
+            int cnt = 0;
+            for(int j = 2; j < 11; j++)
+            {
+                itoa(i, s, j);
+                if(isFlag(s))cnt++;
+                if(cnt > 1) {cout << i << endl; amt++; break;}
+            }
+            if(amt >= n)break;
+        }
+    }
+    return 0;
+}
