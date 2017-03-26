@@ -1,0 +1,60 @@
+/*
+ID: scottn1
+PROG: combo
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+//int vis[101][101][101];
+int vis[101][101][101];
+int cnt;
+int n;
+int main()
+{
+    #ifdef T
+        freopen("combo.in", "r", stdin);
+        freopen("combo.out", "w", stdout);
+    #endif // T
+    while(cin >> n)
+    {
+
+        cnt = 0;
+        memset(vis, 0, sizeof(vis));
+        int a, b, c;
+        cin >> a >> b >> c;
+        for(int i = a+n-2; i<=a+n+2; i++)
+        {
+            for(int j = b+n-2; j<=b+n+2; j++)
+            {
+                for(int k = c+n-2; k<=c+n+2; k++)
+                {
+                    if(!vis[i%n][j%n][k%n])
+                        vis[i%n][j%n][k%n]=1;
+                }
+            }
+        }
+        cin >> a >> b >> c;
+        for(int i = a+n-2; i<=a+n+2; i++)
+        {
+            for(int j = b+n-2; j<=b+n+2; j++)
+            {
+                for(int k = c+n-2; k<=c+n+2; k++)
+                {
+                    if(!vis[i%n][j%n][k%n])
+                        vis[i%n][j%n][k%n]=1;
+                }
+            }
+        }
+
+
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                for(int k = 0; k < n; k++)
+                    if(vis[i][j][k]){cnt++;/*cout << i+1<<j+1<<k+1<<endl;*/}
+        cout << cnt << endl;
+
+    }
+
+    return 0;
+}
