@@ -1,0 +1,72 @@
+/*
+ID: scottn1
+PROG: crypt1
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+int vis[12];
+int cnt;
+int n;
+bool f(int num)
+{
+    while(num)
+    {
+        if(!vis[num%10]) return false;
+        num/=10;
+    }
+    return true;
+}
+int main()
+{
+    #ifdef T
+        freopen("crypt1.in", "r", stdin);
+        freopen("crypt1.out", "w", stdout);
+    #endif // T
+    while(cin >> n)
+    {
+        cnt = 0;
+        for(int i = 0; i < n; i++)
+        {
+            int t;
+            cin >> t;
+            vis[t] = 1;
+        }
+        //memset(r, 0, sizeof(r));
+        for(int i = 1; i <= 9; i++)
+        {
+            if(!vis[i])continue;
+            for(int j = 1; j <= 9; j++)
+            {
+                if(!vis[j])continue;
+                for(int k = 1; k <= 9; k++)
+                {
+                    if(!vis[k])continue;
+                    for(int u = 1; u <= 9; u++)
+                    {
+                        if(!vis[u])continue;
+                        for(int v = 1; v <= 9; v++)
+                        {
+                            if(!vis[v])continue;
+                            int tmp = i*100+j*10+k;
+                            int t1 = tmp*u;
+                            if(t1>999||t1<100) continue;
+                            if(!f(t1))continue;
+                            int t2 = tmp*v;
+                            if(t2>999||t2<100)continue;
+                            if(!f(t2))continue;
+                            int t3 = t1*10+t2;
+                            if(t3>9999||t3<1000)continue;
+                            if(!f(t3))continue;
+                            cnt++;
+                        }
+                    }
+                }
+            }
+        }
+        cout << cnt << endl;
+    }
+
+    return 0;
+}

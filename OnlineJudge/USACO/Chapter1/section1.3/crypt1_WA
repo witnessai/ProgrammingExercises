@@ -1,0 +1,111 @@
+/*
+ID: scottn1
+PROG: crypt1
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+//bug1.数组模拟相加，进位更新问题
+//bug2.待查：
+//7 
+//4 1 2 5 6 7 3 测试数据报错
+int a[10];
+char r[10];
+int p;
+int cnt;
+int n;
+int asd = 0;
+bool Find(char s[], int len)
+{
+
+    for(int i = 0; i < len; i++)
+    {
+        int j;
+        for(j = 0; j < n; j++)
+        {
+            if(s[i]-48 == a[j])break;
+        }
+        if(j==n){return false;}
+    }
+    //if(len==4)
+    {
+        for(int i = 0; i < len; i++)
+            cout << s[i];
+        cout << endl;
+    }
+
+    return true;
+}
+
+
+bool multiply(char str[])
+{
+
+    char u[3], v = str[4], w = str[3];//w是高位
+    char r1[4],r2[4];
+    for(int i = 0; i < 3; i++)
+        u[i] = str[i];
+
+    int car = 0;
+    for(int i = 0; i < 3; i++)
+    {
+        r1[i] = ((u[i]-48)*(v-48)+car)%10+48;
+        car = ((u[i]-48)*(v-48)+car)/10;
+    }
+    if(car>0)return false;
+    if(!Find(r1, 3)) return false;
+
+    car = 0;
+    for(int i = 0; i < 3; i++)
+    {
+        r2[i] = ((u[i]-48)*(w-48)+car)%10+48;
+        car = ((u[i]-48)*(w-48)+car)/10;
+    }
+    if(car>0) return false;
+    if(!Find(r2, 3)) return false;
+
+    for(int i = 2; i >= 0; i--)
+        r2[i+1] = r2[i];
+    r2[0] = '0';r1[3]='0';
+    car = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        int _t = ((r1[i]-48)+(r2[i]-48)+car)/10;
+        r2[i] = ((r1[i]-48)+(r2[i]-48)+car)%10+48;
+        car = _t;
+    }
+    if(car>0)return false;
+    if(!Find(r2, 4))return false;
+    return true;
+}
+
+
+void solve(int x)
+{
+    if(x > n-1){if(multiply(r)) {cnt++;for(int i = 0; i < 5; i++)cout <<r[i];cout <<endl;}return;}
+    for(int i = 0; i < n; i++)
+    {
+        r[x] = a[i]+48;
+        solve(x+1);
+        //r[x] = '\0';
+    }
+}
+int main()
+{
+
+    freopen("crypt1.in", "r", stdin);
+    freopen("crypt1.out", "w", stdout);
+    while(cin >> n)
+    {
+        for(int i = 0; i < n; i++)
+            cin >> a[i];
+        //memset(r, 0, sizeof(r));
+        cnt = 0;
+        p = 0;
+        solve(p);
+        cout << cnt << endl;
+    }
+
+    return 0;
+}
