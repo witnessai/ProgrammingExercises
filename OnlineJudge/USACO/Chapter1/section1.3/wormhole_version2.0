@@ -1,0 +1,87 @@
+/*
+ID: scottn1
+PROG: wormhole
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+//wormhole_version2.0
+const int maxn = 12;
+int N, tot;
+int partner[maxn+1];
+struct node{
+    int x, y;
+}a[maxn+2];
+
+bool cmp(node a, node b)
+{
+    if(a.y < b.y) return true;
+    if(a.y == b.y)
+        if(a.x < b.x) return true;
+    return false;
+}
+
+bool cycle_exist()
+{
+
+    for(int start = 1; start <= N; start++)
+    {
+        int pos = start; int flag = 0;
+        for(int count = 0; count < N; count++)
+        {
+            if(a[partner[pos]+1].y == a[partner[pos]].y)
+            {
+                flag = 1;
+                pos = partner[pos]+1;
+                //cout << "pos: " << pos << endl;
+            }
+            if(pos == start && flag) return true;
+        }
+
+    }
+    return false;
+}
+
+void solve()
+{
+    int i;
+    for(i = 1; i <= N; i++)
+        if(partner[i] == 0) break;
+
+    if(i > N){
+        if(cycle_exist())
+        {
+            tot++;
+            //cout << "tot++" << endl;
+        }
+        return;
+    }
+    for(int j = i+1; j <= N; j++)
+    {
+        if(partner[j] == 0)
+        {
+            partner[i] = j;
+            partner[j] = i;
+            solve();
+            partner[i] = partner[j] = 0;
+        }
+    }
+}
+
+int main()
+{
+    freopen("wormhole.in", "r", stdin);
+    freopen("wormhole.out", "w", stdout);
+    cin >> N;
+    for(int i = 1; i <= N; i++)
+    {
+        cin >> a[i].x >> a[i].y;
+    }
+    sort(a+1, a+N+1, cmp);
+
+    tot = 0;
+    solve();
+    cout << tot << endl;
+
+    return 0;
+}
