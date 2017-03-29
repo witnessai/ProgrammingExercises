@@ -146,6 +146,39 @@ int main()
 
 
 
+Kruskal----------------version2.0
+使用并查集
+
+int find(int x)
+{
+    if(f[x]!=x)
+        f[x]=find(f[x]);
+    return f[x];
+}
+
+void kruskal()
+{
+    int i, j, a, b, tot = 0, num = 0;
+    for(i = 0; i < n; i++)
+        f[i] = i;
+    for(i = 0; i < n; i++)
+    {
+        a=find(s[i]);
+        b=find(e[i]);
+        if(a!=b)
+        {
+            num++;
+            tot+=w[i];
+            f[a] =b;
+            if(num==max)
+                break;
+        }
+    }
+    printf("%d ", tot);
+}
+
+
+
 
 
 
