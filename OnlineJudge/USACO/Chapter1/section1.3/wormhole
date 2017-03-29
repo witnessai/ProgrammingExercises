@@ -1,0 +1,81 @@
+/*
+ID: scottn1
+PROG: wormhole
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+//很考验思维逻辑的一道题，没能做出来，回头好好看看
+//这是看官方题解码的
+#define T
+const int maxn = 12;
+int x[maxn+1], y[maxn+1], N;
+int partner[maxn+1];
+int next_on_right[maxn+1];
+
+bool cycle_exist()
+{
+    for(int start = 1; start <= N; start++)
+    {
+        int pos = start;
+        for(int count = 0; count < N; count++)
+        {
+            pos = next_on_right[partner[pos]];
+        }
+        if(pos) return true;
+    }
+    return false;
+}
+
+int solve(void)
+{
+    int i, tot = 0;
+    for(i = 1; i <= N; i++)
+        if(partner[i] == 0) break;
+
+    if(i > N)
+    {
+        if(cycle_exist()) return 1;
+        return 0;
+    }
+    for(int j = i+1; j <= N; j++)
+    {
+        if(partner[j] == 0)
+        {
+            partner[i] = j;
+            partner[j] = i;
+            tot += solve();
+            partner[i] = partner[j] = 0;
+        }
+
+    }
+    return tot;
+}
+int main()
+{
+    #ifdef T
+        freopen("wormhole.in", "r", stdin);
+        freopen("wormhole.out", "w", stdout);
+
+    #endif // T
+
+
+    while(cin >> N)
+    {
+        memset(next_on_right, 0, sizeof(next_on_right));
+        memset(x, 0, sizeof(x));
+        memset(y, 0, sizeof(y));
+        memset(partner, 0, sizeof(partner));
+        for(int i = 1; i <= N; i++)
+            cin >> x[i] >> y[i];
+        for(int i = 1; i <= N; i++)
+            for(int j = 1; j <= N; j++)
+                if(x[i] < x[j] && y[i] == y[j])
+                    if(!next_on_right[i] || x[j]-x[i] < x[next_on_right[i]]-x[i])
+                        next_on_right[i] = j;
+        cout << solve() << endl;
+    }
+
+    return 0;
+}
