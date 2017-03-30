@@ -1,0 +1,83 @@
+/*
+ID: scottn1
+PROG: ariprog
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+//自己写的搜索TLE了，此代码参考题解
+int res[26];
+int bis[251*251*2+1];
+int p;
+int a[65000];
+int N, M;
+int flag;
+int cnt;
+struct node
+{
+    int a0;
+    int d;
+}record[500];
+
+bool cmp(node a, node b)
+{
+      return a.d < b.d;
+}
+int main()
+{
+    freopen("ariprog.in", "r", stdin);
+    freopen("ariprog.out", "w", stdout);
+
+    while(cin >> N >> M)
+    {
+        for(int i = 0; i <= M; i++)
+        {
+            for(int j = 0; j <= M; j++)
+            {
+                bis[i*i+j*j] = 1;
+            }
+        }
+        int _l = 251*251*2+1;
+        p = 0;
+        cnt = 0;
+        for(int i = 0; i < _l; i++)
+        {
+            if(bis[i] == 1)
+                a[p++] = i;
+        }
+
+        for(int i = 0; i < p; i++)
+        {
+            for(int j = i+1; j < p; j++)
+            {
+                int diff = a[j]-a[i];
+                int k;
+                if(a[i]+(N-1)*diff > a[p-1]) continue;
+                for(k = 1; k < N; k++)
+                {
+                    if(bis[a[i]+k*diff] != 1) break;
+                }
+                if(k >= N)
+                {
+                    flag = 1;
+                    record[cnt].a0 = a[i];
+                    record[cnt].d = diff;
+                    cnt++;
+                }
+            }
+        }
+        sort(record, record+cnt, cmp);
+        if(!flag)
+            puts("NONE");
+        else
+            for(int i = 0; i < cnt; i++)
+                printf("%d %d\n", record[i].a0, record[i].d);
+
+
+
+    }
+
+
+
+    return 0;
+}
