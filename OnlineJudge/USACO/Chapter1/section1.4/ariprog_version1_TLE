@@ -1,0 +1,48 @@
+/*
+ID: scottn1
+PROG: ariprog
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int res[26];
+set<int> st;
+int N, M;
+int flag;
+int main()
+{
+    freopen("ariprog.in", "r", stdin);
+    freopen("ariprog.out", "w", stdout);
+
+    while(cin >> N >> M)
+    {
+        flag = 0;
+        for(int i = 0; i <= M; i++)
+        for(int j = 0; j <= M; j++)
+        {
+            st.insert(i*i+j*j);
+        }
+        for(int i = 1; i < 2800; i++)
+        {
+            for(int j = 0; j < 16000; j++)
+            {
+
+                int x, y;
+                for(x=0,y=j; x<N; x++,y+=i)
+                {
+                    if(st.find(y) != st.end())
+                        continue;
+                    break;
+                }
+                if(x >= N) {cout << j << ' ' << i << endl; flag = 1;}
+            }
+        }
+        if(!flag) cout << "NONE" << endl;
+    }
+
+
+
+    return 0;
+}
