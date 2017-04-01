@@ -1,0 +1,147 @@
+12_数论
+
+引入：
+1.费马小定理：
+有N为任意正整数，P为素数，且N不能被P整除（显然N和P互质），则有：N^P%P=N(即：N的P次方除以P的余数是N)。
+但是我查了很多资料见到的公式都是这个样子：
+(N^(P-1))%P=1后来分析了一下，两个式子其实是一样的，可以互相变形得到。
+原式可化为：(N^P-N)%P=0(即：N的P次方减N可以被P整除，因为由费马小定理知道N的P次方除以P的余数是N)把N提出来一个，N^P就成了你N*(N^(P-1))，那么(N^P-N)%P=0可化为：
+(N*(N^(P-1)-1))%P=0
+请注意上式，含义是：N*(N^(P-1)-1)可以被P整除
+又因为N*(N^(P-1)-1)必能整除N（这不费话么!）
+所以，N*(N^(P-1)-1)是N和P的公倍数，小学知识了^_^
+又因为前提是N与P互质，而互质数的最小公倍数为它们的乘积，所以一定存在
+正整数M使得等式成立：N*(N^(P-1)-1)=M*N*P
+两边约去N，化简之：N^(P-1)-1=M*P
+因为M是整数，显然：N^(P-1)-1)%P=0即：N^(P-1)%P=1
+
+一、素数判定
+
+1.朴素算法（试除法）
+int prime(int x) 
+{ 
+    int i,t=sqrt(x); 
+    for(i=2;i<=t;i++) 
+        if(x%i==0) 
+            return 0; 
+    return 1; } 
+运行时间：当n=100000 时，用时 63ms；当n=1000000 时，用时 1328ms
+
+2.2.优化的试除法（记录素数） 
+int p[n]={2},num=1; 
+int prime(int x) 
+{
+    int i,t=sqrt(x); 
+    for(i=0;i<num;i++) 
+    { 
+        if(x%p[i]==0) 
+            return 0; 
+        if(p[i]>t) break; 
+    } 
+    p[num++]=x; 
+    return 1; } 
+运行时间：当 n=100000时，用时40ms；当 n=1000000 时，用时 562ms。显然，与朴素 的试除相比，带记忆化的试除可以减少对众多合数的检验，提高运行效率，尤其在大数据时 优势明显
+
+
+3.筛法 
+void prime() 
+{ 
+    int i,j; 
+    for(i=2;i<=n;i++) 
+        if(!p[i]) 
+        for(j=i+i;j<=n;j+=i) 
+            p[j]=1; 
+}
+运行时间：当n=100000 时，用时15ms；当n=1000000 时，用时265ms。显然，与上述 两种试除算法相比，速度又提高了不少。缺点是：空间复杂度为 O(n)，当 n过大时内存无 法承受。之所以简单而经典的筛法能取得如此高的效率，是因为避免了缓慢的除法和根号。 同时提醒我们，除法和取模的速度极慢，会导致常数因子较大，与加减乘不可同日而语，应 当尽量减少。
+
+
+2."蒙格马利”快速幂模算法
+
+
+3.Miller-Rabbin测试
+首先了解一下伪素数的概念： 如果n是一个正整数，如果存在和n互素的正整数a满足a^(n-1)≡1(mod n)，我们说n是基于a的伪素数。
+如果一个数是伪素数，它几乎就是素数。另一方面，如果一个数不是伪素数，它一定不是一个素数。那么在一定的条件下，如果我们选取了若干个基都发现n是伪素数， 那么n是素数的概率趋近于1。
+
+现在我们只需要多次寻找不超过n-1基并检验是否有a^(n-1)≡1(mod n)， 如果一直有， 那么这个数就是一个素数， 否则可以立即判定这个数是个合数。
+检验的时候使用快速幂进行优化， 可以使复杂度降至O(slogn)， 这里s为选取基的次数。 可以证明， 出错的概率不大于1/(2^s)， 因此s取到几十就差不多了。 再就是对于2要进行特判， 否则会对0求余， 那显然是不对的。
+
+代码：
+#include <cstdio>  
+#include <cmath>  
+#include <cstdlib>  
+#include <ctime>  
+  
+using namespace std;  
+  
+typedef long long LL;  
+LL gcd(LL x, LL y)  
+{  
+    if (!y) return x;  
+    return (y, x%y);  
+}  
+LL pow(LL a, LL x, LL mod)  
+{  
+    LL ans = 1;  
+    while(x)  
+    {  
+        if (x & 1) (ans *= a) %= mod;  
+        (a *= a) %= mod;  
+        x >>= 1;  
+    }  
+    return ans;  
+}  
+bool MRT(LL x)  
+{  
+    if (x == 2) return true;  
+    for (LL i = 1; i <= 30; ++i)  
+    {  
+        LL now = rand()%(x-2) + 2;  
+        if (pow(now, x-1, x) != 1) return false;  
+    }  
+    return true;  
+}  
+int main()  
+{  
+    int n;  
+    LL x;  
+    scanf("%d", &n);  
+    while(n--)  
+    {  
+        scanf("%I64d", &x);  
+        if (MRT(x)) printf("YES\n");  
+        else printf("NO\n");  
+    }  
+    return 0;  
+}  
+
+
+递归版：
+long long mod_pow(long a,long n,long m)
+{
+     if (n == 0) 
+        return 1 % m;
+     else if (n == 1)
+          return a % m;
+     else if (! (n & 1))
+          return sqr(mod_pow(a,n >> 1,m)) % m;
+     else if (n & 1)
+          return a * (sqr(mod_pow(a,n >> 1,m)) % m) % m;
+}
+ 
+bool miller_rabin(long x)
+{
+     long long a;
+ 
+     for (int i = 0; i < 4; i++)
+     {
+         a = (rand() % (x - 1)) + 1;
+         if (mod_pow(a,x-1,x) != 1)
+            return false;
+     }
+ 
+     return true;
+}
+
+
+
+ 
