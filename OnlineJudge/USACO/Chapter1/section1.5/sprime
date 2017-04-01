@@ -1,0 +1,54 @@
+/*
+ID: scottn1
+PROG: sprime
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+int a[10];
+int n;
+
+bool isprime(int m)
+{
+    int s = 0;
+    for(int i = 0; i <= m; i++)
+        s = s*10+a[i];
+    int t = sqrt(s);
+    for(int i = 2; i <= t; i++)
+        if(s%i == 0)
+            return false;
+    return true;
+}
+
+void solve(int p)
+{
+    if(p > n-1)
+    {
+        for(int i = 0; i < n; i++)
+            printf("%d", a[i]);
+        printf("\n");
+        return;
+    }
+    for(int i = 1; i <= 9; i++)
+    {
+        if(p==0 && i==1)continue;
+        a[p] = i; if(!isprime(p)) continue;
+        solve(p+1);
+
+    }
+
+}
+
+int main()
+{
+    #ifdef T
+        freopen("sprime.in", "r", stdin);
+        freopen("sprime.out", "w", stdout);
+    #endif
+
+    cin >> n;
+    solve(0);
+
+    return 0;
+}
