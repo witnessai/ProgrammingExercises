@@ -145,6 +145,7 @@ void quick_sort1(int s[], int l, int r)
 //将两部分代码综合并优化代码
 void quick_sort(int s[], int l, int r)
 {
+	if(l >= r) return;
 	int i = l, j = r;
 	int x = s[1];
 	while(i < j)
