@@ -1,0 +1,86 @@
+/*
+ID: scottn1
+PROG: frac1
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int n;
+struct Node
+{
+    int a, b;
+}arr[10000];
+
+int vis[160][160];
+int gcd(int a, int b)
+{
+    return b==0?a:gcd(b, a%b);
+}
+
+bool cmp(Node a, Node b)
+{
+    int g = gcd(a.b, b.b);
+    int mu = a.b*b.b/g;
+    int x1 = a.a*mu/a.b;
+    int x2 = b.a*mu/b.b;
+    return x1 < x2;
+}
+
+
+int main()
+{
+    #ifdef T
+        freopen("frac1.in", "r", stdin);
+        freopen("frac1.out", "w", stdout);
+    #endif
+
+    int p;
+    while(cin >> n)
+    {
+        p = 0;
+        memset(vis, 0, sizeof(vis));
+        //i is 分母， j is 分子
+        for(int i = 1; i <= n; i++)
+        {
+            for(int j = 1; j < i; j++)
+            {
+                int g = gcd(i, j);
+                if(!vis[j/g][i/g])
+                {
+                    vis[j/g][i/g] = 1;
+                }
+            }
+        }
+
+        for(int i = 1; i <= n; i++)
+        {
+            for(int j = 1; j < i; j++)
+            {
+                if(vis[j][i])
+                {
+                    arr[p].a = j;
+                    arr[p].b = i;
+                    p++;
+                }
+            }
+        }
+        sort(arr, arr+p, cmp);
+
+        printf("%d/%d\n", 0, 1);
+
+        for(int i = 0; i < p; i++)
+        {
+            printf("%d/%d\n", arr[i].a, arr[i].b);
+        }
+
+        printf("%d/%d\n", 1, 1);
+    }
+
+
+
+
+    return 0;
+}
+
