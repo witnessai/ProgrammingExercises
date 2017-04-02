@@ -1,0 +1,58 @@
+/*
+ID: scottn1
+PROG: preface
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int s[255];
+
+string Roman(int num)
+{
+    char *c[4][10] = {
+            {"","I","II","III","IV","V","VI","VII","VIII","IX"},
+            {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"},
+            {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"},
+            {"","M","MM","MMM"}
+        };
+    string roman;
+    roman.append(c[3][num/1000%10]);
+    roman.append(c[2][num/100%10]);
+    roman.append(c[1][num/10%10]);
+    roman.append(c[0][num%10]);
+    return roman;
+}
+
+void Count(string src)
+{
+    for(int i = 0; i < src.size(); i++)
+        s[src[i]]++;
+}
+
+int main()
+{
+    #ifdef T
+        freopen("preface.in", "r", stdin);
+        freopen("preface.out", "w", stdout);
+    #endif
+
+    int N;
+    cin >> N;
+    for(int i = 1; i <= N; i++)
+    {
+        Count(Roman(i));
+    }
+    if(s['I']) cout << "I " << int(s['I']) << endl;
+    if(s['V']) cout << "V " << int(s['V']) << endl;
+    if(s['X']) cout << "X " << int(s['X']) << endl;
+    if(s['L']) cout << "L " << int(s['L']) << endl;
+    if(s['C']) cout << "C " << int(s['C']) << endl;
+    if(s['D']) cout << "D " << int(s['D']) << endl;
+    if(s['M']) cout << "M " << int(s['M']) << endl;
+
+
+    return 0;
+}
+
