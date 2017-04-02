@@ -1,0 +1,92 @@
+/*
+ID: scottn1
+PROG: holstein
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+//dfs超时
+int V, G;
+int p, minp;
+int ans[16];
+int tans[16];
+int cntsum[16];
+int v[26];
+int g[16][26];
+int vis[16];
+int flag;
+void solve(int x)
+{
+    if(x > minp && flag) return;
+    int i;
+    for(i = 0; i < V; i++)
+    {
+        if(cntsum[i] < v[i]) break;
+    }
+    if(i == V)
+    {
+        if(x < minp)
+        {
+            minp = x; flag = 1;
+            for(int j = 0; j <= x; j++)
+            {
+                ans[j] = tans[j];
+            }
+        }
+        return;
+    }
+
+    for(i = 0; i < G; i++)
+    {
+
+        if(vis[i]) continue;
+        for(int j = 0; j < V; j++)
+            cntsum[j] += g[i][j];
+        vis[i] = 1;
+        tans[x] = i;
+        solve(x+1);
+        for(int j = 0; j < V; j++)
+            cntsum[j] -= g[i][j];
+        vis[i] = 0;
+    }
+}
+
+int main()
+{
+    #ifdef T
+        freopen("holstein.in", "r", stdin);
+        freopen("holstein.out", "w", stdout);
+    #endif
+
+    while(cin >> V)
+    {
+        minp = 16;
+        p = 0; flag = 0;
+        memset(v, 0, sizeof(v));
+        memset(g, 0, sizeof(g));
+        memset(vis, 0, sizeof(vis));
+        memset(tans, 0, sizeof(tans));
+        memset(ans, 0, sizeof(ans));
+        memset(cntsum, 0, sizeof(cntsum));
+        for(int i = 0; i < V; i++)
+            cin >> v[i];
+        cin >> G;
+        for(int i = 0; i < G; i++)
+        {
+            for(int j = 0; j < V; j++)
+                cin >> g[i][j];
+        }
+
+        solve(p);
+
+        cout << minp;
+        for(int i = 0; i < minp; i++)
+            cout << " " << ans[i]+1;
+        cout << endl;
+    }
+
+
+    return 0;
+}
+
