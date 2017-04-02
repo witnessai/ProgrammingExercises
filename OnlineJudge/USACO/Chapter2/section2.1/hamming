@@ -1,0 +1,57 @@
+/*
+ID: scottn1
+PROG: hamming
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int N, B, D;
+int a[65];
+int p;
+
+int countbit(int n)
+{
+    int cnt = 0;
+    for(int i = 0; i < B; i++)
+    {
+        if(n & (1 << i)) cnt++;
+    }
+    return cnt;
+}
+
+bool judge(int n)
+{
+    for(int i = 0; i < p; i++)
+    {
+        if(countbit(n ^ a[i]) < D) return false;
+    }
+    return true;
+}
+int main()
+{
+    #ifdef T
+        freopen("hamming.in", "r", stdin);
+        freopen("hamming.out", "w", stdout);
+    #endif
+
+    cin >> N >> B >> D;
+    p = 0;
+    a[p++] = 0;
+    int len = pow(2, B);
+    for(int i = 1; i < len && p < N; i++)
+    {
+        if(judge(i)) a[p++] = i;
+    }
+    for(int i = 0; i < p; i++)
+    {
+        cout << a[i];
+        if((i+1)%10 && i+1 != p)cout << " ";
+        else cout << endl;
+    }
+
+
+    return 0;
+}
+
