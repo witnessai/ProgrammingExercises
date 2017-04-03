@@ -1,0 +1,72 @@
+/*
+ID: scottn1
+PROG: subset
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+//01背包的变型题
+
+int N;
+int d[40];
+int half;
+
+int main()
+{
+    #ifdef T
+        freopen("subset.in", "r", stdin);
+        freopen("subset.out", "w", stdout);
+    #endif
+
+    cin >> N;
+
+    half = N*(N+1)/2;
+    if(half & 1) return 0*printf("0\n");
+
+    half >>= 1;
+    d[0] = 1;
+    for(int i = 1; i <= N; i++)
+    {
+        for(int j = half; j >= i; j--)
+            d[j] += d[j-i];
+    }
+    cout << (d[half]>>1) << endl;
+    return 0;
+}
+
+
+
+/*
+ID: prime421
+LANG: C++
+TASK: subset
+*/
+#include <fstream>
+using namespace std;
+ifstream fin("subset.in");
+ofstream fout("subset.out");
+int main()
+{
+	int N;
+	fin>>N;
+	if ((N*(N+1))&3)
+		fout<<0<<endl;
+	else{
+		int SUM=N*(N+1);
+		SUM>>=2;//SUM的含义为总和的一半，这样输出的时候要除以2，因为两种互补的集合都被计算上了
+		long long* f=new long long[SUM+1];//注意一定要用long long类型
+		for (int i=1;i<=SUM;++i) f[i]=0;//这里我脑残了动态申请数组开始用memset结果没初始化完毕真坑X
+                //longlong类型数组如果是动态申请的没把握不要用memset初始化当然memcpy什么的也谨慎大坑啊！
+		f[0]=1;
+                //正规的滚动数组优化空间后的DP，状态转移方程为f(i,j)=f(i-1,j-i)+f(i-1,j)(j>=i)，其中边界条件为f(i,0)=1(i=1,2,...,N)
+                //其中f(i,j)的意义为1,2,...,i可以有多少种方式组成和为j的集合
+		for (int i=1;i<=N;++i)
+			for (int j=SUM;j>=i;--j)
+				f[j]+=f[j-i];
+		fout<<(f[SUM]>>1)<<endl;//注意要除以2，啊当然不用位运算没关系的核心部分在上面的循环所以别的地方的优化都是白费心思
+	}
+	return 0;
+}
+
