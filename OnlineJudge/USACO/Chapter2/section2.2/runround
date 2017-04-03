@@ -1,0 +1,80 @@
+/*
+ID: scottn1
+PROG: runround
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+//01背包的变型题
+
+int n;
+const int inf = 0x3f3f3f3f;
+int v[15];
+
+bool judge(int x)
+{
+    int r[10] = {0};
+//    cout << endl;
+//    cout << x << endl;
+    vector<int> a;
+    while(x)
+    {
+        a.push_back(x%10);
+        r[x%10]++;
+        x /= 10;
+    }
+    if(r[0]) return false;
+    for(int i = 1; i < 10; i++)
+        if(r[i]>1) return false;
+    memset(v, 0, sizeof(v));
+
+    reverse(a.begin(), a.end());
+    int len = a.size();
+//    cout << "vector is ";
+//    for(int i = 0; i < len; i++)
+//        cout << a[i];
+//    cout << endl;
+
+    int p = 0;
+    for(int i = 0; i < len; i++)
+    {
+        int sh = a[p]%len;
+//        cout << "p is " << p << endl;
+//        cout << "a[p] is " << a[p] << endl;
+//        cout << "sh is " << sh << endl;
+        p = (p+sh)%len;
+        //cout << "next p is " << p << endl;
+        if(v[p]) return false;
+        v[p] = 1;
+    }
+    return true;
+
+}
+
+
+
+int main()
+{
+    #ifdef T
+        freopen("runround.in", "r", stdin);
+        freopen("runround.out", "w", stdout);
+    #endif
+
+    while(cin >> n)
+    {
+        for(int i = n+1; i <= inf; i++)
+        {
+            if(judge(i))
+            {
+                cout << i << endl; break;
+            }
+
+        }
+    }
+    return 0;
+}
+
+
+
