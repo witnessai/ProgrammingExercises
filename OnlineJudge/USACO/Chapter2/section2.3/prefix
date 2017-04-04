@@ -1,0 +1,62 @@
+//参考：http://blog.csdn.net/kk303/article/details/7019190
+//动态规划题目
+
+/*
+ID: scottn1
+PROG: prefix
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+bool g[200005];
+string s, a[205];
+char str[81];
+
+
+int main()
+{
+    #ifdef T
+        freopen("prefix.in", "r", stdin);
+        freopen("prefix.out", "w", stdout);
+    #endif
+    int i = 0;
+    while(cin >> a[i])
+    {
+        if(a[i][0] == '.') break;
+        i++;
+    }
+    int num = i;
+
+    s = "";
+    while(~scanf("%s", str))
+    {
+        s += str;
+    }
+    int len = s.size();
+    int maxn = 0;
+    g[0] = true;
+    for(i = 0; i < len; i++)
+    {
+        if(g[i])
+        {
+            for(int j = 0; j < num; j++)
+            {
+                for(int k = 0; k < a[j].size(); k++)
+                    if(s[i+k] != a[j][k]) goto A;
+
+                g[i+a[j].size()] = true;
+                if(i+a[j].size()>maxn) maxn = i+a[j].size();
+                A: ;
+            }
+        }
+
+    }
+
+    cout << maxn << endl;
+    return 0;
+}
+
+
+
