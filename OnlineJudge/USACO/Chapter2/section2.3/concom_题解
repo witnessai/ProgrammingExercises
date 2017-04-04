@@ -1,0 +1,58 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: concom
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+int N;
+int a[101][101];
+bool flag[101], own[101];
+int cnt[101];
+int m;
+
+void dfs(int x)
+{
+    if(flag[x]) return;
+    flag[x] = true;
+    for(int i = 1; i <= m; i++)
+    {
+        cnt[i] += a[x][i];
+        if(cnt[i]>50)
+        {
+            dfs(i);
+            own[i] = true;
+        }
+    }
+}
+int main()
+{
+
+	freopen("concom.in", "r", stdin);
+	freopen("concom.out", "w", stdout);
+	cin >> N;
+    int u, v;//try to avoid m
+    for(int i = 1; i <= N; i++)
+    {
+        cin >> u >> v;
+        cin >> a[u][v];
+        if(u > m) m = u;
+        if(v > m) m = v;
+    }
+
+    for(int i = 1; i <= m; i++)
+    {
+        fill_n(cnt+1, m, 0);
+        fill_n(flag+1, m, false);
+        fill_n(own+1, m, false);
+        dfs(i);
+        for(int j = 1; j <= m; j++)
+        {
+            if(own[j] && i != j)
+                printf("%d %d\n", i, j);
+        }
+    }
+
+
+}
