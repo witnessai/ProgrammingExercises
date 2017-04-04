@@ -1,0 +1,34 @@
+/*
+ID: scottn1
+PROG: money
+LANG: C++
+*/
+
+//完全背包问题
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int V, N;
+int d[10005];
+int main()
+{
+    #ifdef T
+        freopen("money.in", "r", stdin);
+        freopen("money.out", "w", stdout);
+    #endif
+
+    cin >> V >> N;
+    d[0] = 1;//注意初始化的状态
+    for(int i = 1; i <= V; i++)
+    {
+        int money; cin >> money;
+        for(int j = money; j <= N; j++)
+            d[j] += d[j-money];
+    }
+    cout << d[N] << endl;
+    return 0;
+}
+
+
+
