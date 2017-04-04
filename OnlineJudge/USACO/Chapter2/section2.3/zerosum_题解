@@ -1,0 +1,119 @@
+/*
+ID: scottn1
+PROG: zerosum
+LANG: C++
+*/
+
+//涉及到字符串表达式，不太熟悉的题型
+//枚举时按照' ','+','-'的顺序添加当前空格处的运算符，保证输出的顺序正确。
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+
+int N, len;
+char r[31];
+char op[3] = {' ', '+', '-'};
+
+void judge()
+{
+    int te = 0, ans = 0;
+    bool plus = true;
+    for(int i = 1; i <= len; i++)
+        if(r[i]>='0'&&r[i]<='9') te = te*10+r[i]-'0';
+        else if(r[i]=='+')
+        {
+            if(plus)
+            {
+                ans += te;
+                te = 0;
+            }
+            if(!plus)
+            {
+                ans -= te;
+                te = 0;
+                plus = true;
+            }
+        }
+        else if(r[i]=='-')
+        {
+            if(!plus)
+            {
+                ans -= te;
+                te = 0;
+            }
+            if(plus)
+            {
+                ans += te;
+                te = 0;
+                plus = false;
+            }
+        }
+    if(plus)ans+=te;
+    else ans-=te;
+    if(ans==0)
+    {
+        for(int i = 1; i <= len; i++)
+            printf("%c", r[i]);
+        printf("\n");
+    }
+}
+
+void dfs(int n)
+{
+    if(n == N){judge(); return;}
+    for(int i = 0; i < 3; i++)
+    {
+        r[++len] = op[i];
+        r[++len] = '0'+n+1;
+        dfs(n+1);
+        len -= 2;
+    }
+}
+int main()
+{
+    #ifdef T
+        freopen("zerosum.in", "r", stdin);
+        freopen("zerosum.out", "w", stdout);
+    #endif
+
+    cin >> N;
+    len = 1;
+    r[1] = '1';
+    dfs(1);
+    return 0;
+}
+
+
+
+
+
+DFS的解法
+/*
+ID: noname01
+PROB: zerosum
+LANG: C++
+*/
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+ifstream fin("zerosum.in");
+ofstream fout("zerosum.out");
+int n,m;
+void dfs(int step,int sum,int num,string s){
+  string s1=s;
+  if(step==n){if(sum+num==0)fout<<s<<endl;return;}
+  if(num>0)dfs(step+1,sum,num*10+step+1,s+" "+char(step+1+48));
+  else dfs(step+1,sum,num*10-step-1,s+" "+char(step+1+48));
+  dfs(step+1,sum+num,step+1,s+"+"+char(step+1+48));
+  dfs(step+1,sum+num,-1*step-1,s+"-"+char(step+1+48));
+}
+void solve(){
+  fin>>n;
+  dfs(1,0,1,"1");
+}
+int main(){
+  solve();
+  return(0);
+}
