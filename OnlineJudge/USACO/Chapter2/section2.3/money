@@ -10,7 +10,7 @@ using namespace std;
 #define T
 
 int V, N;
-int d[10005];
+unsigned long long d[10005];
 int main()
 {
     #ifdef T
