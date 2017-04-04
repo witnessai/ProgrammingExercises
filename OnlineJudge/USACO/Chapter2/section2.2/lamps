@@ -1,0 +1,105 @@
+/*
+ID: scottn1
+PROG: lamps
+LANG: C++
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int N, C;
+int on[101];
+int off[101];
+int ok;
+string s;
+map<string, int>mp;
+vector<int> a;
+
+void judge()
+{
+    for(int i = 0; i <= N; i++)
+    {
+        if(on[i] && !a[i])return;
+        if(off[i] && a[i]) return;
+    }
+    s = "";
+    for(int i = 1; i <= N; i++)
+        if(a[i]) s += "1";
+        else s+="0";
+    if(!mp[s]){mp[s] = 1;}
+    ok = 1;
+}
+
+
+void solve(int n)
+{
+    switch(n)
+    {
+    case 0:
+        for(int i = 0; i <= N; i++)
+            a[i] = !a[i];
+        return;
+    case 1:
+        for(int i = 1; i <= N; i+=2)
+            a[i] = !a[i];
+        return;
+    case 2:
+        for(int i = 0; i <= N; i+=2)
+            a[i] = !a[i];
+        return;
+    case 3:
+        for(int i = 1; i <= N; i+=3)
+            a[i] = !a[i];
+        return;
+    default:return;
+    }
+}
+
+int main()
+{
+    #ifdef T
+        freopen("lamps.in", "r", stdin);
+        freopen("lamps.out", "w", stdout);
+    #endif
+
+    while(cin >> N)
+    {
+        cin >> C;
+        ok = 0;
+        mp.clear();
+        if(C > 4) C = C%4?C%4:4;
+        int t;
+        while(cin >> t && t != -1)
+        {
+            on[t] = 1;
+        }
+        while(cin >> t && t != -1)
+        {
+            off[t] = 1;
+        }
+
+        for(int i = 0; i < (1<<4); i++)
+        {
+            bitset<4> bit(i);
+            a.assign(N+1, 1);
+            if(bit.count() > C) continue;
+            for(int j = 0; j < 4; j++)
+            {
+                if(bit[j] & 1) solve(j);
+            }
+            judge();
+        }
+        if(!ok) cout << "IMPOSSIBLE\n";
+        else
+        {
+            map<string, int>::iterator it;
+            for(it = mp.begin(); it != mp.end(); it++)
+                cout << it->first << endl;
+        }
+
+    }
+    return 0;
+}
+
+
+
