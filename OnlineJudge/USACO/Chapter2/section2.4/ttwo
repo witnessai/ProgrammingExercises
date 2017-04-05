@@ -1,0 +1,66 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: ttwo
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+char g[12][12];
+char dir[4] = {'N', 'E', 'S', 'W'};
+//北东南西
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+int ans;
+int ok;
+void dfs(int fx, int fy, int fd, int cx, int cy, int cd, int p)
+{
+    if(fx==cx && fy == cy){ans = p;  return;}
+    if(g[fx+dx[fd]][fy+dy[fd]]=='*') fd = (fd+1)%4;
+    else {fx += dx[fd]; fy+=dy[fd];}
+    if(g[cx+dx[cd]][cy+dy[cd]]=='*') cd = (cd+1)%4;
+    else {cx +=dx[cd]; cy+=dy[cd];}
+    p++;
+    //给p限制1w以防超时，，结果真的过了所有数据，有点运气成分
+    if(p > 10000) {ans = 0; return;}
+    dfs(fx, fy, fd, cx, cy, cd, p);
+}
+
+int main()
+{
+
+    #ifdef T
+	freopen("ttwo.in", "r", stdin);
+	freopen("ttwo.out", "w", stdout);
+	#endif
+	int fx, fy, fd, cx, cy, cd;
+	for(int i = 1; i <= 10; i++)
+        for(int j = 1; j <= 10; j++)
+        {
+            cin >> g[i][j];
+            if(g[i][j] == 'F')
+            {
+                fx = i; fy = j;
+            }
+            if(g[i][j]=='C')
+            {
+                cx = i; cy = j;
+            }
+        }
+    for(int j = 0; j <= 11; j++)
+    {
+        g[0][j] = '*'; g[11][j] = '*';
+    }
+    for(int i = 0; i <= 11; i++)
+    {
+        g[i][0] = '*'; g[i][11] = '*';
+    }
+    //cout << "yes " << endl;
+    fd = 0; cd = 0;
+    dfs(fx, fy, fd, cx, cy, cd, ans);
+    cout << ans << endl;
+
+    return 0;
+
+}
