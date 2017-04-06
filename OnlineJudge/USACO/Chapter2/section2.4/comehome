@@ -1,0 +1,75 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: comehome
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+int dist[255][255];
+int N;
+const int inf = 1e9+7;
+int ans;
+char ch;
+void floyd()
+{
+    for(int k = 'A'; k <= 'z'; k++)
+    {
+        for(int i = 'A'; i <= 'z'; i++)
+        {
+            for(int j = 'A'; j <= 'z'; j++)
+            {
+                dist[i][j] = min(dist[i][j], dist[i][k]+dist[k][j]);
+            }
+        }
+    }
+    ans = inf;
+
+    for(int i = 'A'; i <= 'Y'; i++)
+    {
+        if(dist[i]['Z']<inf)
+        {
+            if(dist[i]['Z']<ans)
+            {
+                ans = dist[i]['Z'];
+                ch = i;
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    #ifdef T
+    freopen("comehome.in", "r", stdin);
+    freopen("comehome.out", "w", stdout);
+    #endif // T
+    cin >> N;
+    for(int i = 0; i < N; i++)
+    {
+        char x, y; getchar();
+        scanf("%c %c", &x, &y);
+        if(x==y)cin >> dist[0][0];
+        else if(!dist[x][y]) {cin >> dist[x][y]; dist[y][x] = dist[x][y];}
+        else if(dist[x][y])
+        {
+            int t; cin >> t;
+            dist[x][y]=min(dist[x][y], t);
+            dist[y][x]=dist[x][y];
+        }
+    }
+    for(int i = 'A'; i <= 'z'; i++)
+    {
+        for(int j = 'A'; j <= 'z'; j++)
+        {
+            if(i==j)dist[i][j]=0;
+            else if(!dist[i][j]) dist[i][j]=inf;
+        }
+    }
+    floyd();
+    cout << ch << " " << ans << endl;
+
+    return 0;
+}
