@@ -1,0 +1,116 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: cowtour
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+int N;
+struct node
+{
+    int x, y;
+}a[151];
+
+int dist[151][151];
+double A[151][151];
+const double inf = 1e9+7;
+double ans = -1;
+
+double D(int i, int j)
+{
+    return sqrt((a[i].x-a[j].x)*(a[i].x-a[j].x)+(a[i].y-a[j].y)*(a[i].y-a[j].y));
+}
+
+void Floyd()
+{
+
+    for(int i = 1; i <= N; i++)
+    {
+        for(int j = 1; j <= N; j++)
+        {
+            if(i==j){A[i][i]=0; continue;}
+            if(dist[i][j])
+            {
+                A[i][j] = A[j][i] = D(i, j);
+
+            }
+            else
+            {
+                A[i][j] = A[j][i] = inf;
+            }
+        }
+    }
+
+
+    for(int k = 1; k <= N; k++)
+    {
+        for(int i = 1; i <= N; i++)
+        {
+            for(int j = 1; j <= N; j++)
+            {
+                A[i][j] = min(A[i][j], A[i][k]+A[k][j]);
+            }
+        }
+    }
+
+
+}
+
+
+void solve()
+{
+    double mdis[N+1];
+    for(int i = 1; i <= N; i++)
+    {
+        mdis[i] = -1;
+        for(int j = 1; j <= N; j++)
+        {
+            if(A[i][j]>mdis[i] && A[i][j]<inf)
+                    mdis[i] = A[i][j];
+        }
+    }
+
+    ans = inf;
+    for(int i = 1; i <= N; i++)
+    {
+        for(int j = 1; j <= N; j++)
+        {
+            if(!dist[i][j]&&A[i][j]==inf)
+            {
+                double t = D(i, j)+mdis[i]+mdis[j];
+                //cout << t << endl;
+                if(t > ans)continue;
+                for(int k = 1; k <= N; k++)
+                    t = max(t, mdis[k]);
+                ans = t;
+                //cout << ans << endl;
+
+            }
+        }
+    }
+}
+int main()
+{
+    #ifdef T
+    freopen("cowtour.in", "r", stdin);
+    freopen("cowtour.out", "w", stdout);
+    #endif // T
+
+    cin >> N;
+    for(int i = 1; i <= N; i++)
+        cin >> a[i].x >> a[i].y;
+
+
+    for(int i = 1; i <= N; i++)
+    {
+        for(int j = 1; j <= N; j++)
+            scanf("%1d", &dist[i][j]);
+    }
+
+    Floyd();
+    solve();
+    printf("%.6lf\n", ans);
+    return 0;
+}
