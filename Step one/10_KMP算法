@@ -6,10 +6,14 @@ KMP的next数组求法是很不容易搞清楚的一部分，也是最重要的�
 入门：http://www.cnblogs.com/yjiyjige/p/3263858.html
 强化next数组的概念：http://www.cnblogs.com/tangzhengyue/p/4315393.html
 
+
+//代码一：getNext函数和index函数有问题，通不过测试，等待后续检查
+
 next数组代码：
 void getNext(string s, int next[])
 {
 	int i = 0, j = -1;
+	next[0]=-1;
 	while(i < s.size())
 	{
 		if(j == -1 || s[i] == s[j])
@@ -48,3 +52,83 @@ int index(string s, string t)
 	if(j == t.size()) return i-t.size();
 	else	return -1;	
 }
+
+
+//代码二：飘过的小牛博客代码
+
+
+#include<iostream>  
+#include<cstring>  
+#include<cstdio>  
+#include<algorithm>  
+using namespace std;  
+#define N 100010  
+char str1[N], str2[N];  
+int nextval[N];  
+int lens, lenp;  
+  
+void getnext(const char *p, int nextval[]) //前缀函数(滑步函数)  
+{  
+    int i = 0, j = -1;  
+    nextval[0] = -1;  
+    while(i != lenp)  
+    {  
+        if(j == -1 || p[i] == p[j]) //(全部不相等从新匹配 || 相等继续下次匹配)  
+        {  
+            ++i, ++j;  
+            if(p[i] != p[j]) //abcdabce  
+                nextval[i] = j;  
+            else //abcabca  
+                nextval[i] = nextval[j];  
+        }  
+        else  
+            j = nextval[j]; //子串移动到第nextval[j]个字符和主串相应字符比较  
+    }  
+    cout<<"前缀函数为："<<endl;  
+    for(int i = 0; i < lenp; ++i)  
+        printf("%d", nextval[i]);  
+    cout<<endl;  
+}  
+  
+int KMP(char *s, char *p, int nextval[]) //KMP算法  
+{  
+    int i = 0, j = 0; //s和j字符串从头开始比较  
+    while(i != lens && j != lenp)  
+    {  
+        if(s[i] == p[j]) //相等继续匹配  
+            ++i, ++j;  
+        else  
+        {  
+            if(nextval[j] == -1) //-1代表与p[0]间接比较过，需要主串后移，p重新从头匹配  
+                ++i, j = 0;  
+            else  
+                j = nextval[j]; //直接右移nextval[j]位与s[i]比较  
+        }  
+    }  
+    if(j == lenp) //返回从主串第几个元素开始匹配  
+        return i - j;  
+    else  
+        return -1;  
+}  
+  
+int main() //主串子串位置从0开始  
+{  
+    int pos;  
+    while(~scanf("%s%s", str1, str2)) //str1为主串,str2为子串  
+    {  
+        lens = strlen(str1);  
+        lenp = strlen(str2);  
+        if(lens < lenp) //主串长度<子串长度  
+        {  
+            printf("主串长度不应小于子串长度！\n");  
+            continue;  
+        }  
+        getnext(str2, nextval); //求子串的前缀函数  
+        pos = KMP(str1, str2, nextval);  
+        if(pos == -1)  
+            printf("主串中不含有子串\n");  
+        else  
+            printf("子串从主串的第 %d 个元素开始匹配\n", pos);  
+    }  
+    return 0;  
+}          
