@@ -1,0 +1,60 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: agrinet
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int n;
+int a[101][101];
+struct node
+{
+    int s, e, w;
+}no[10010];
+int f[10010];
+bool cmp(node a, node b)
+{
+    return a.w < b.w;
+}
+
+int fa(int x)
+{
+    return f[x]==x?x:f[x]=fa(f[x]);
+}
+
+
+int main()
+{
+    #ifdef T
+    freopen("agrinet.in", "r", stdin);
+    freopen("agrinet.out", "w", stdout);
+    #endif // T
+    cin >> n;
+    int t=0;
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < n; j++)
+        {
+            cin >> no[t].w;
+            no[t].s=i; no[t].e=j;
+            t++;
+        }
+    sort(no, no+t, cmp);
+    for(int i = 0; i < n; i++) f[i]  = i;
+    int tot = 0;
+    for(int i = 0; i < t; i++)
+    {
+        int a = fa(no[i].s);
+        int b = fa(no[i].e);
+        if(a!=b)
+        {
+            tot+=no[i].w;
+            f[a]=b;
+        }
+    }
+    cout << tot << endl;
+
+    return 0;
+}
