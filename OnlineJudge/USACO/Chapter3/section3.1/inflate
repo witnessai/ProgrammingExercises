@@ -1,0 +1,37 @@
+/*
+ID: scottn1
+LANG: C++
+TASK: inflate
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+#define T
+
+int m, n;
+int v[100010], c[100010];
+int d[100010];
+
+int main()
+{
+    #ifdef T
+    freopen("inflate.in", "r", stdin);
+    freopen("inflate.out", "w", stdout);
+    #endif // T
+    cin >> m >> n;
+    for(int i = 0; i < n; i++)
+    {
+        cin >> v[i] >> c[i];
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = c[i]; j <= m; j++)
+        {
+            d[j] = max(d[j], d[j-c[i]]+v[i]);
+        }
+    }
+    cout << d[m] << endl;
+
+    return 0;
+}
