@@ -1,0 +1,117 @@
+#字典树（简单解释就是26叉树
+//参考：http://blog.csdn.net/niushuai666/article/details/6695503
+
+字典树，也是trie树，单词查找树
+字典树，顾名思义，就是一种对字母等字符串进行处理的一种特殊数据结构。
+说白了，就是二十六叉树。定义一个头指针，每次从头指针开始操作。
+有两种常用的操作：
+1.查询某个字符串的出现次数。
+每个节点的count置为0，直到这个字符串结束，在末尾处count++.这样，就记录了该字符串的出现次数。
+2.查询某个字符串特定序列出现的次数。
+每个节点的count初始化为0，当读入一个字符，则count++。这样，查询时，这个节点count记录的就是从头结点到该结点特定序列出现的次数。可以用于统计单词的前缀一类的题目。
+
+例题：
+给你一堆英文单词（可能有4000000个。用普通查询铁定让你TLE）。找出出现次数最多的，输出这个单词，并输出出现的次数。
+
+思路：
+如果数据范围很小，我们可以用STL里面的map映射来做，但是数据范围太大，用普通的数据结构肯定会超时，所以要考虑更优的数据结构。当然，这题也是赤裸裸的字典树应用。当然，也可以用hash来做。
+
+代码如下：
+#include<iostream>  
+#include<cstdio>  
+#include<cstring>  
+#include<cstdlib>  
+#include<string>  
+#include<algorithm>  
+using namespace std;  
+  
+struct Dictree  
+{  
+    int count; //单词出现次数  
+    struct Dictree * tire[26]; //26个子节点  
+}*a;  
+  
+void init()  
+{  
+    a = new Dictree;  
+    for(int i = 0; i < 26; ++i) //子结点指针置空  
+        a->tire[i] = NULL;  
+}  
+  
+int insert(char str[])  
+{  
+    int len, res;  
+    Dictree *head = a; //head是头指针，每次变化。但a不变，每次从头指针开始  
+    len = strlen(str);  
+    for(int i = 0; i < len; ++i)  
+    {  
+        res = (int) (str[i] - 97); //下标对应字母  
+        if(head->tire[res] == NULL) //没有此字母，开辟新结点并初始化  
+        {  
+            head->tire[res] = new Dictree;             
+            head = head->tire[res];//和下一个顺序不能反，先指向开辟结点，再赋值为0  
+            head->count = 0;  
+            for(int j = 0; j < 26; ++j)  
+                head->tire[j] = NULL;  
+        }  
+        else  
+            head = head->tire[res];  
+    }  
+    head->count++; //记录单词出现次数  
+    return head->count; //返回单词出现次数  
+}  
+  
+int main()  
+{  
+    int num, tmp, maxlen = 0;  
+    char ani[11], ans[11];  
+    init();  
+    scanf("%d", &num);  
+    for(int i = 0; i < num; ++i)  
+    {  
+        scanf("%s", ani);  
+        tmp = insert(ani);  
+        if(tmp > maxlen)  
+        {  
+            maxlen = tmp;  
+            strcpy(ans, ani);  
+        }  
+    }  
+    printf("%s %d\n", ans, maxlen);  
+    return 0;  
+}  
+
+
+
+
+
+附数据范围小时，用map做的代码吧。。。。
+#include<map>  
+#include<string>  
+#include<iostream>  
+#include<algorithm>  
+using namespace std;  
+  
+int main()  
+{  
+    int n;  
+    char animal[11];  
+    map<string, int> ani;  
+    map<string, int>::iterator pos, num;  
+    cin>>n;  
+    for(int i = 0; i < n; ++i)  
+    {  
+        cin>>animal;  
+        ani[animal] += 1;  
+    }  
+    for(pos = ani.begin(), num = ani.begin(); pos != ani.end(); ++pos)  
+    {  
+        if(pos->second > num->second)  
+        {  
+            num = pos;  
+        }  
+    }  
+    cout<<num->first<<" "<<num->second<<endl;  
+    return 0;  
+}          
+
