@@ -13,6 +13,8 @@ using namespace std;
 
 #define INF 0x3f3f3f3f
 #define maxn 10000  //考虑到子串的大小，枚举10000就够了
+//此题是trie树类型的题目，但是考虑到数据量比较小
+//所以可以用映射来做
 
 typedef struct
 {
