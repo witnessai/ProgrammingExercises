@@ -1,0 +1,44 @@
+/*
+ID: scottn1
+LANG: C++
+PROG: stamps
+*/
+#include <bits/stdc++.h>
+using namespace std;
+//完全背包用DP做
+
+int main()
+{
+    freopen("stamps.in", "r", stdin);
+    freopen("stamps.out", "w", stdout);
+    int k, n;
+    int f[2100001];
+    int a[51];
+    cin >> k >> n;
+    for(int i = 0; i < n; i++)
+        cin >> a[i];
+    int w;
+    for(w = 0; ; w++)
+    {
+        if((f[w]||!w) && f[w]<=k)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                if(f[w+a[i]])
+                    f[w+a[i]]=min(f[w+a[i]], f[w]+1);
+                else
+                    f[w+a[i]] = f[w]+1;
+            }
+
+        }
+        else
+        {
+            cout << w-1 << endl;
+            break;
+        }
+    }
+
+
+
+    return 0;
+}
