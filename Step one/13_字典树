@@ -10,6 +10,68 @@
 2.查询某个字符串特定序列出现的次数。
 每个节点的count初始化为0，当读入一个字符，则count++。这样，查询时，这个节点count记录的就是从头结点到该结点特定序列出现的次数。可以用于统计单词的前缀一类的题目。
 
+
+
+代码样例：
+#include<vector>  
+#include<cmath>  
+#include<cstring>  
+#include<algorithm>  
+#include<string>  
+#include<cstdio>  
+#include<iostream>  
+using namespace std;  
+struct trie  
+{  
+    trie *ch[26];  
+    int num;  
+    trie(){  
+        num=0;  
+        for(int i=0;i<26;i++) ch[i]=NULL;  
+    }  
+}*root;  
+void insertTrie(char s[])  
+{  
+    trie *p=root;  
+    p->num++;  
+    for(int i=0;s[i];++i){  
+        int j=s[i]-'a';  
+        if(p->ch[j]==NULL) p->ch[j]=new trie;  
+        p=p->ch[j];  
+        p->num++;  
+    }  
+}  
+int searchTrie(char s[])  
+{  
+    trie *p=root;  
+    for(int i=0;p&&s[i];++i){  
+        int j=s[i]-'a';  
+        p=p->ch[j];  
+    }  
+    if(!p) return 0;  
+    else return p->num;  
+}  
+int main()  
+{  
+    int n,m;char s[12];  
+    while(~scanf("%d",&n))  
+    {  
+        root = new trie;  
+        while(n--){  
+            scanf("%s",s);  
+            insertTrie(s);  
+        }  
+        scanf("%d",&m);  
+        while(m--){  
+            scanf("%s",s);  
+            printf("%d\n",searchTrie(s));  
+        }  
+    }  
+    return 0;  
+}  
+
+
+
 例题：
 给你一堆英文单词（可能有4000000个。用普通查询铁定让你TLE）。找出出现次数最多的，输出这个单词，并输出出现的次数。
 
