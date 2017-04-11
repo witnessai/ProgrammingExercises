@@ -1,0 +1,45 @@
+/*
+ID: scottn1
+LANG: C++
+PROG: stamps
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+int K, N;
+int a[51];
+int cnt;
+int flag;
+int tot;
+
+void dfs(int n, int p)
+{
+    if(tot == n) {flag=1; return;}
+    if(p >= K) return;
+    for(int i = 0; i < N; i++)
+    {
+        tot += a[i];
+        dfs(n, p+1);
+        tot -= a[i];
+    }
+}
+
+int main()
+{
+    freopen("stamps.in", "r", stdin);
+    freopen("stamps.out", "w", stdout);
+    cin >> K >> N;
+    for(int i = 0; i < N; i++)
+        cin >> a[i];
+    sort(a, a+N);
+    for(int i = 1; i < 500000; i++)
+    {
+        flag = 0; tot = 0;
+        dfs(i, 0);
+        if(flag) cnt++;
+        else break;
+    }
+    cout << cnt << endl;
+
+    return 0;
+}
