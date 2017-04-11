@@ -1,0 +1,107 @@
+/*
+ID:scottn1
+LANG:C++
+PROG:contact
+*/
+
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<map>
+#include<algorithm>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 10000  //考虑到子串的大小，枚举10000就够了
+
+typedef struct
+{
+    string str;
+    int cnt;
+}P;
+P p[maxn];
+
+bool cmp(P p1,P p2)
+{
+    int len1=p1.str.size();
+    int len2=p2.str.size();
+    if(p1.cnt==p2.cnt)
+    {
+        if(len1==len2)
+        {
+            return p1.str<p2.str;
+        }
+        else
+        {
+            return len1<len2;
+        }
+    }
+    return p1.cnt>p2.cnt;
+}
+
+string str,str1;
+int main()
+{
+    freopen("contact.in","r",stdin);
+    freopen("contact.out","w",stdout);
+    //freopen("lkl.txt","r",stdin);
+    map<string,int>M;
+    int a,b,n;
+    cin>>a>>b>>n;
+    str="";
+    while(cin>>str1)
+    {
+        str+=str1;
+    }
+    int len=str.size();
+    for(int i=0;i<len;i++)
+    {
+        for(int j=a;j<=b&&i+j<=len;j++)
+        {
+            str1=str.substr(i,j);
+            M[str1]++;
+        }
+    }
+    map<string,int>::iterator it;
+    int k=1;
+    for(it=M.begin();it!=M.end();it++)
+    {
+        p[k].str=it->first;
+        p[k].cnt=it->second;
+        k++;
+    }
+    sort(p+1,p+k,cmp);
+    int cnt=1,cur=p[1].cnt,tmp=1;
+    cout<<p[1].cnt<<endl;
+    cout<<p[1].str;
+    for(int i=2;i<k;i++)
+    {
+         if(p[i].cnt==p[i-1].cnt)
+         {
+             if(cnt==0)
+                cout<<p[i].str;
+             else
+                cout<<" "<<p[i].str;
+             cnt++;
+             if(cnt==6)
+             {
+                cout<<endl;
+                cnt=0;
+             }
+         }
+         else
+         {
+             if(tmp==n)
+                break;
+             if(cnt!=0)
+               cout<<endl;
+             cout<<p[i].cnt<<endl;
+             cout<<p[i].str;
+             cnt=1;
+             tmp++;
+         }
+    }
+    if(cnt!=0)
+       cout<<endl;
+  return 0;
+}
