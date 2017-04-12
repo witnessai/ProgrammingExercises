@@ -1,0 +1,35 @@
+/*
+ID: scottn1
+LANG: C++
+PROG: fact4
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+int s;
+int maxn = 10000;
+int main()
+{
+    freopen("fact4.in", "r", stdin);
+    freopen("fact4.out", "w", stdout);
+
+    int n;
+    while(cin >> n)
+    {
+        s = 1;
+        for(int i = 2; i <= n; i++)
+        {
+            s *= i;
+            while(s%10==0)
+            {
+                s /= 10;
+            }
+            s %= maxn;
+        }
+
+        printf("%d\n", s%10);
+
+    }
+
+    return 0;
+}
