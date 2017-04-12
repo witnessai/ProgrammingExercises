@@ -1,0 +1,58 @@
+/*
+ID: scottn1
+LANG: C++
+PROG: kimbits
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+//暴搜果断超时,这里参考用DP
+//设长度为j的01串，1的个数不大于k的个数为f[j,k]
+//方程：f[j,k]=f[j-1,k]+f[j-1,k-1]; //分别表示在当前位加上0和加上1时的两种状况
+//边界：f[j,0]=1,f[0,j]=1;f[j,k](k>j)=f[j,j]
+//这样我们得到了所有的f[j,k](j,k∈Z, j,k>0),需要做的就是据此构造出所求字符串.
+//设所求串为S,假设S的位中最高位的1在自右向左第K+1位，
+//那么必然满足F[K,L]< I,F[K+1,L] >=I,这样的K是唯一的。
+//所以S的第一个1在从右至左第K+1位.因为有F[K,L]个串第K+1位上为0，
+//所以所求的第I个数的后K位就应该是满足"位数为K且串中1不超过L-1个"这个条件的第I-F[K,L]个数。
+unsigned int N, L, I;
+int d[33][33];
+int main()
+{
+    freopen("kimbits.in", "r", stdin);
+    freopen("kimbits.out", "w", stdout);
+
+    cin >> N >> L >> I;
+    for(int i = 0; i <= N; i++)
+    {
+
+        d[i][0] = 1;
+        d[0][i] = 1;
+    }
+
+    for(int i = 1; i <= N; i++)
+    {
+        for(int j = 1; j <= N; j++)
+        {
+            d[i][j] = d[i-1][j-1]+d[i-1][j];
+        }
+    }
+//
+//    for(int i = 1; i <= N; i++)
+//    {
+//        for(int j = 1; j <= N; j++)
+//            cout << d[i][j] << " ";
+//        cout << endl;
+//    }
+    for(int i = N; i >= 1; i--)
+    {
+        if(d[i-1][L]>=I)
+        {
+            printf("0");
+        }
+        else {printf("1"); I-=d[i-1][L]; L--;}
+    }
+    printf("\n");
+
+    return 0;
+}
