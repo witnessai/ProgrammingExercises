@@ -1,0 +1,153 @@
+#并查集
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <cstring>
+using namespace std;
+
+const int MAXN = 1e5 + 2;
+int N, M;
+int pre[MAXN];
+
+struct Edge
+{
+    Edge(int _n1, int _n2, int _days) :n1(_n1), n2(_n2), days(_days) {}
+    int n1, n2, days;
+    bool operator<(const Edge& e) const
+    {
+        return days < e.days;
+    }
+};
+vector<Edge> ve;
+
+int f(int x)
+{
+    int f0 = x, f1 = x;
+    for (; pre[f0] > 0;) f0 = pre[f0];
+    for (; pre[f1] > 0;)
+    {
+        int t = f1;
+        f1 = pre[f1];
+        pre[t] = f0;
+    }
+    return f0;
+}
+
+void u(int n1, int n2)
+{
+    int f1 = f(n1);
+    int f2 = f(n2);
+    if (f1 != f2)
+    {
+        if (pre[f1] <= pre[f2])
+        {
+            pre[f1] += pre[f2];
+            pre[f2] = f1;
+        }
+        else
+        {
+            pre[f2] += pre[f1];
+            pre[f1] = f2;
+        }
+    }
+}
+
+int main()
+{
+    memset(pre, -1, sizeof pre);
+    int a, b, c;
+    scanf("%d%d", &N, &M);
+    for (int i = 0; i < M; i++)
+    {
+        scanf("%d%d%d", &a, &b, &c);
+        //ve.push_back({ a,b,c });        // 用这个会编译错误的
+        ve.push_back(Edge(a, b, c));
+    }
+    sort(ve.begin(), ve.end());
+    for (int i = 0; i < ve.size(); i++)
+    {
+        u(ve[i].n1, ve[i].n2);
+        if (f(1) == f(N))
+        {
+            printf("%d\n", ve[i].days);
+            break;
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+#SPFA
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+const int oo = 1e9;
+const int MAXN = 1e5 + 5;
+int N, M;
+bool inq[MAXN] = { 0 };
+int opt[MAXN];
+
+struct Edge
+{
+    Edge(int _from, int _to, int _weight) :from(_from), to(_to), weight(_weight) {}
+    int from, to;
+    int weight;
+};
+vector<Edge> ve;
+vector<int> v[MAXN];
+
+void bfs(int s)
+{
+    queue<int> q;
+    q.push(s);
+    inq[s] = true;
+    opt[s] = 0;
+    for (; !q.empty();)
+    {
+        int t = q.front();
+        q.pop();
+        inq[t] = false;
+        for (int i = 0; i < v[t].size(); i++)
+        {
+            int e = v[t][i];
+            int next = ve[e].to;
+            int m;
+            if ((m = max(opt[t], ve[e].weight)) < opt[next])
+            {
+                opt[next] = m;
+                if (!inq[next])
+                {
+                    q.push(next);
+                    inq[next] = true;
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    scanf("%d%d", &N, &M);
+    fill(opt + 1, opt + N + 1, oo);
+    int f, t, w;
+    for (int i = 0; i < M; i++)
+    {
+        scanf("%d%d%d", &f, &t, &w);
+        ve.push_back(Edge(f, t, w));
+        ve.push_back(Edge(t, f, w));
+        v[f].push_back(i << 1);
+        v[t].push_back(i << 1 | 1);
+    }
+    bfs(1);
+    cout << opt[N] << endl;
+
+    return 0;
+}
