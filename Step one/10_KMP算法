@@ -7,7 +7,7 @@ KMP的next数组求法是很不容易搞清楚的一部分，也是最重要的�
 强化next数组的概念：http://www.cnblogs.com/tangzhengyue/p/4315393.html
 
 
-//代码一：getNext函数和index函数有问题，通不过测试，等待后续检查
+
 
 next数组代码：
 void getNext(string s, int next[])
