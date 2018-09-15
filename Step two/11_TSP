@@ -1,0 +1,62 @@
+提交：https://acm.sjtu.edu.cn/OnlineJudge/problem/1088
+算法详解参考：卜东波老师算法讲义
+
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+int N;
+int a[17][17];
+
+int M(vector<int> v, int e)
+{
+    if (v.size() == 0) return 0;
+    if (v.size() == 1) return a[0][v[0]] + a[v[0]][e];
+    int mi =  1e9+7;
+    for(int i = 0; i < v.size(); i++)
+    {
+        int tmp = v[i];
+        v.erase(v.begin()+i);
+        mi = min(mi, M(v, tmp)+a[tmp][e]);
+        //cout << mi << endl;
+        v.insert(v.begin()+i, tmp);
+
+    }
+    return mi;
+}
+
+int main()
+{
+    while(cin >> N)
+    {
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                scanf("%d", &a[i][j]);
+            }
+        }
+        
+
+        int res = 1e9+7;
+        for(int i = 1; i < N; i++)
+        {
+            vector<int> v;
+            for(int j = 1; j < N; j++)
+            {
+                if (j != i) v.push_back(j);
+            }
+            res = min(M(v, i)+a[i][0], res);
+
+        }
+        if(N == 1 ) res = 0;
+        if(N == 2 ) res = a[0][1]*2;
+        cout << res << endl;
+    }
+
+
+    return 0;
+}
