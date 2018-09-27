@@ -174,6 +174,79 @@ void quick_sort(int s[], int l, int r)
 	快速排序还有很多改进版本，如随机选择基准数，区间内数据较少时直接用
 另的方法排序以减小递归深度。有兴趣的筒子可以再深入的研究下。
 
+
+2018-9-27 update 快速排序 Lomuto's implementation
+#include <iostream>
+#include <stdio.h>
+#include <algorithm>
+
+using namespace std;
+int A[5000000+3];
+int N, idx;
+
+int partition(int A[], int l, int h)
+{
+    int pivot = A[h];
+    int i = l-1;
+    for (int j = l; j < h; j++)
+    {
+        if(A[j] <= pivot)
+        {
+            i++;
+            int t = A[j];
+            A[j] = A[i];
+            A[i] = t;
+        }
+    }
+    if (A[h] < A[i+1])
+    {
+        int r = A[h];
+        A[h] = A[i+1];
+        A[i+1] = r;
+    }
+    return i+1;
+    
+    //    int r = i+1;
+    //    cout << r << endl;
+    //    for(int i = l; i <= h; i++)
+    //        printf("%d ", A[i]);
+    //    printf("\n");
+    //    //cout << r << endl;
+    //    return r;
+}
+
+void quick_sort(int A[], int l, int h)
+{
+    if(l < h)
+    {
+        int p = partition(A, l, h);
+        quick_sort(A, l, p-1);
+        quick_sort(A, p+1, h);
+    }
+
+}
+
+
+int main()
+{
+    
+    while(~scanf("%d%d", &N, &idx))
+    {
+        for (int i = 0; i < N; i++)
+        {
+            scanf("%d", &A[i]);
+        }
+        
+//        partition(A, 0, N-1);
+        quick_sort(A, 0, N-1);
+//        printf("%d\n", A[N-idx]);
+//        for(int i = 0; i < N; i++)
+//            printf("%d ", A[i]);
+//        printf("\n");
+    }
+    return 0;
+}
+
  
 
 注1，有的书上是以中间的数作为基准数的，要实现这个方便非常方便，直接将
